@@ -1,0 +1,15 @@
+.goTop{
+  width: 49px;
+  height: 44px;
+  background: url('assets/img/sprite.png') no-repeat 0 9999px;
+  background-position: -265px -47px;
+  position: fixed;
+  right: 210px;
+  bottom: 160px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.goTop:hover{
+  background-position: -325px -47px;
+}
