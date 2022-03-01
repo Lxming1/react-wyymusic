@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const HeaderNav = styled.div`
-  height: 34px;
+  height: 35px;
   background-color: #C20C0C;
 
   .content{

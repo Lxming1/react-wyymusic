@@ -1,9 +1,11 @@
 import { Map } from "immutable" //性能优化
 import { 
+  ClEARPLISTDETAIL,
   GETALBUM,
   GETANCHOR, 
   GETARTIST, 
   GETBANNERMES, 
+  GETPLAYLISTDETAIL, 
   GETRECOMMEND, 
   GETRMDTOPLIST 
 } from "./contant"
@@ -14,7 +16,8 @@ const initState = Map({
   albumMes: [],
   recToplistMes: [],
   artistMes: [],
-  anchorMes: []
+  anchorMes: [],
+  playlistDetailMes: {}
 })
 
 export default function reducer(state = initState, actions) {
@@ -31,6 +34,10 @@ export default function reducer(state = initState, actions) {
       return state.set('artistMes', actions.artist)
     case GETANCHOR:
       return state.set('anchorMes', actions.anchor)
+    case GETPLAYLISTDETAIL:
+      return state.set('playlistDetailMes', actions.playlistItem)
+    case ClEARPLISTDETAIL:
+      return state.set('playlistDetailMes', {})
     default:
       return state
   }

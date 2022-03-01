@@ -29,3 +29,7 @@ export const getAnchorApi = () => {
   return request('/dj/hot?limit=10')
 }
 
+export const getPlaylistDetailApi = id => {
+  return request(`/playlist/detail?id=${id}`)
+}
+

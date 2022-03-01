@@ -11,7 +11,7 @@ const PlaylistItem = memo(({playlistItem}) => {
     <PlayListItem>
       <div className="pic">
         <img src={getImgSize(playlistItem.picUrl, 140)} alt={playlistItem.name}/>
-        <a href={`#/discover/playlist?id=${playlistItem.id}`} 
+        <a href={`#/playlist?id=${playlistItem.id}`} 
           title={playlistItem.name} 
           className="sprite_covor boli"> </a>
         <div className='bottomBar sprite_covor'>

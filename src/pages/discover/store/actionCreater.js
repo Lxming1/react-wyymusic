@@ -1,8 +1,10 @@
 import { 
+  ClEARPLISTDETAIL,
   GETALBUM,
   GETANCHOR,
   GETARTIST, 
   GETBANNERMES, 
+  GETPLAYLISTDETAIL, 
   GETRECOMMEND, 
   GETRMDTOPLIST 
 } from "./contant";
@@ -13,7 +15,8 @@ import {
   getToplistApi,
   getToplistItemApi,
   getArtistApi,
-  getAnchorApi
+  getAnchorApi,
+  getPlaylistDetailApi
 } from "services/recommend";
 
 // 轮播图
@@ -105,6 +108,24 @@ export const getAnchor = () => {
   return dispatch => {
     getAnchorApi().then(res => {
       dispatch(changeAnchor(res.djRadios))
+    })
+  }
+}
+
+// 歌单详情
+export const changePlaylistDetail = playlistItem => ({
+  type: GETPLAYLISTDETAIL,
+  playlistItem
+})
+
+export const clearPlaylistDetail = () => ({
+  type: ClEARPLISTDETAIL
+})
+
+export const getPlaylistDetail = id => {
+  return dispatch => {
+    getPlaylistDetailApi(id).then(res => {
+      dispatch(changePlaylistDetail(res.playlist))
     })
   }
 }
