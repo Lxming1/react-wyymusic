@@ -25,3 +25,8 @@ export function formatDate(date, fmt) {
 function padLeftZero (str) {
 	return ('00' + str).substr(str.length);
 }
+
+export const wan = (num, count) => {
+	const newNum = num > count ? (num / 10000).toFixed(0) + '万' : num
+	return newNum
+}

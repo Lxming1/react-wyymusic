@@ -1,8 +1,11 @@
 import React, { memo } from 'react'
+import { MainRight } from './style'
 
 const PlaylistRight = memo(() => {
   return (
-    <div>PlaylistRight</div>
+    <MainRight>
+      
+    </MainRight>
   )
 })
 

@@ -1,12 +1,10 @@
 import React, { memo } from 'react'
 import { PlayListItem } from '../style'
 import { getImgSize } from 'utils/format-utils'
+import { wan } from 'utils/format-utils'
 
 const PlaylistItem = memo(({playlistItem}) => {
-  const wan = (num) => {
-    const newNum = num > 10000 ? (num / 10000).toFixed(0) + '万' : num
-    return newNum
-  }
+  
   return (
     <PlayListItem>
       <div className="pic">
@@ -17,7 +15,7 @@ const PlaylistItem = memo(({playlistItem}) => {
         <div className='bottomBar sprite_covor'>
           <div className="bottomLeft">
             <span className='leftIcon sprite_icon'/>
-            <span className='playCount'>{wan(playlistItem.playCount)}</span>
+            <span className='playCount'>{wan(playlistItem.playCount, 10000)}</span>
           </div>
           <span className="rightIcon sprite_icon"/>
         </div>

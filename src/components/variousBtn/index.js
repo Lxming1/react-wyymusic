@@ -1,4 +1,5 @@
 import React, { memo } from 'react'
+import { wan } from 'utils/format-utils'
 import { BtnWrapper } from './style'
 
 const VariousBtn = memo(({privileges, subscribedCount, shareCount, commentCount}) => {
@@ -17,11 +18,11 @@ const VariousBtn = memo(({privileges, subscribedCount, shareCount, commentCount}
           播放
         </i>
       </a>
-      <a href="#/" className="addToPlayList sprite_button" title="添加到播放列表"></a>
-      {btnCpn('collectToPlayList', subscribedCount)}
-      {btnCpn('transfer', shareCount)}
+      <a href="#/" className="addToPlayList sprite_button" title="添加到播放列表"> </a>
+      {btnCpn('collectToPlayList', wan(subscribedCount, 100000))}
+      {btnCpn('transfer', wan(shareCount, 100000))}
       {btnCpn('download')}
-      {btnCpn('comment', commentCount)}
+      {btnCpn('comment', wan(commentCount, 100000))}
     </BtnWrapper>
   )
 })

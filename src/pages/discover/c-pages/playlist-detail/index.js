@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from 'react'
 import Nav from 'pages/discover/c-cpn/nav'
-import {  PlaylistItemWrapper, MainLeft, MainRight } from './style'
+import {  PlaylistItemWrapper } from './style'
 import { HeaderNav } from '../../style'
 import PlaylistLeft from './c-cpns/playlist-left'
 import PlaylistRight from './c-cpns/playlist-right'
@@ -27,12 +27,8 @@ const XMPlaylistItem = memo(() => {
         <Nav/>
       </HeaderNav>
       <div className="wrap-v2 playlistMain">
-        <MainLeft>
-          <PlaylistLeft/>
-        </MainLeft>
-        <MainRight>
-          <PlaylistRight/>
-        </MainRight>
+        <PlaylistLeft/>
+        <PlaylistRight/>
       </div>
     </PlaylistItemWrapper>
   )

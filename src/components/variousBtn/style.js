@@ -26,9 +26,9 @@ export const BtnWrapper = styled.div`
       .ply{
         display: inline-block;
         width: 20px;
-        height: 18px;
+        height: 20px;
         background-position: 0 -1622px;
-        margin: 0 2px 2px 8px;
+        margin: 2px 2px 2px 8px;
       }
     }
 
