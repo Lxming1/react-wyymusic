@@ -1,5 +1,7 @@
 import React, { memo } from 'react'
 import { getImgSize } from 'utils/format-utils'
+import { getCurrentSong } from 'pages/player/store/actionCreater'
+import { useDispatch } from 'react-redux'
 
 const ToplistItem = memo(({item, index}) => {
   const leftArr = [20, 20.4, 20.9]
@@ -7,6 +9,11 @@ const ToplistItem = memo(({item, index}) => {
   const jumpLink = `#/discover/toplist?id=${item.id}`
   const toplistColor = index => {
     return index + 1 < 4 ? '#c10d0c' : '#666666'
+  }
+  const dispatch = useDispatch()
+
+  const playSong = id => {
+    dispatch(getCurrentSong(id))
   }
 
   return (
@@ -19,7 +26,7 @@ const ToplistItem = memo(({item, index}) => {
         <div className='rightMes'>
           <a href={jumpLink} className="title" title={item.name}>{item.name}</a>
           <div className='rightIcon'>
-            <a className='playIcon sprite_02 icon' title="播放" href="#/"> </a>
+            <a className='playIcon sprite_02 icon' title="播放" onClick={e => playSong(item.tracks[0].id)}> </a>
             <a className='collectIcon sprite_02 icon' title='收藏' href="#/"> </a>
           </div>
         </div>
@@ -32,7 +39,7 @@ const ToplistItem = memo(({item, index}) => {
                 <span style={{color: toplistColor(index)}}>{index+1}</span>
                 <a href='#/discover/toplist' className="name">{item.name}</a>
                 <div className="oper">
-                  <a href="#/" title="播放" className="play sprite_02"> </a>
+                  <a title="播放" className="play sprite_02" onClick={e => playSong(item.id)}> </a>
                   <a href="#/" title="添加到播放列表" className="addToList sprite_icon2"> </a>
                   <a href="#/" title="收藏" className="collect sprite_02"> </a>
                 </div>

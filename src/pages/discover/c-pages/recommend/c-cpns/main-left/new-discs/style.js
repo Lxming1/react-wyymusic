@@ -58,6 +58,7 @@ export const DiscsMainWrapper = styled.div`
           width: 118px;
           height: 100px;
           margin-bottom: 7px;
+          position: relative;
 
           .bag1{
             display: inline-block;
@@ -66,6 +67,27 @@ export const DiscsMainWrapper = styled.div`
             position: absolute;
             background-position: 0 -570px;
             top: 0;
+          }
+
+          .playIcon{
+            cursor: pointer;
+            display: none;
+            position: absolute;
+            height: 22px;
+            width: 22px;
+            right: 25px;
+            bottom: 5px;
+
+            :hover{
+              background-position: 0 -110px !important;
+            }
+          }
+
+          :hover{
+            .playIcon{
+              background-position: 0 -85px;
+              display: inline-block;
+            }
           }
         }
 

@@ -1,9 +1,10 @@
 import React, { memo } from 'react'
 import PlaylistHeader from 'components/playlisst-header'
-import { formatDate } from '../../../../../../../utils/format-utils'
+import { formatDate } from 'utils/format-utils'
+import { useDispatch } from 'react-redux'
+import { getCurrentSong } from 'pages/player/store/actionCreater'
 
 const PlSonglist = memo(({playlistItem}) => {
-  console.log(playlistItem)
   const songlistRight = () => {
     const style = {
       height: '33px',
@@ -14,8 +15,15 @@ const PlSonglist = memo(({playlistItem}) => {
       top: 0
     }
     return (
-      <span style={style}>播放：<strong style={{color: '#c20c0c'}}>{playlistItem.playCount}</strong>次</span>
+      <span style={style}>
+        播放：<strong style={{color: '#c20c0c'}}>{playlistItem.playCount}</strong>次
+      </span>
     )
+  }
+  const dispatch = useDispatch()
+
+  const playSong = (id) => {
+    dispatch(getCurrentSong(id))
   }
 
   const songTime = value => {
@@ -43,7 +51,10 @@ const PlSonglist = memo(({playlistItem}) => {
             { playlistItem.tracks &&
               playlistItem.tracks.map((item, index) => (
                 <tr key={item.id} style={index % 2 === 0 ? {backgroundColor: '#f7f7f7'} : {}}>
-                  <td style={{display: 'flex', justifyContent:'space-between'}}><span className='index'>{index+1}</span><i className="sprite_table playIcon"></i></td>
+                  <td style={{display: 'flex', justifyContent:'space-between'}}>
+                    <span className='index'>{index+1}</span>
+                    <i className="sprite_table playIcon" onClick={e => playSong(item.id)}></i>
+                  </td>
                   <td className='name' title={item.name}><a href="#/">{item.name}</a></td>
                   <td><span style={{color:'#666'}}>{songTime(item.dt)}</span></td>
                   <td title={item.ar.map(item => item.name).join('/')}>
