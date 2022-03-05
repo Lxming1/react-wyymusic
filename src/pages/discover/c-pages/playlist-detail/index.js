@@ -17,6 +17,7 @@ const XMPlaylistItem = memo(() => {
   const currentPlID = location.search.substring(4, location.search.length)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     dispatch(getPlaylistDetail(currentPlID))
     return () => dispatch(clearPlaylistDetail())
   }, [dispatch, currentPlID])

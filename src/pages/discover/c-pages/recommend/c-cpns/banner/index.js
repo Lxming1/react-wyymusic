@@ -1,6 +1,7 @@
 import React, { memo, useRef, useState, useLayoutEffect } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { getBanner } from 'pages/discover/store/actionCreater'
+import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { Carousel } from 'antd';
 import { BannerWrapper } from './style';
 
@@ -63,11 +64,15 @@ const Banner = memo(() => {
     </ul>
   )
 
+  const imgjump = id => {
+    dispatch(getCurrentSong(id))
+  }
+
   // 轮播图片
   const bannerItem = (
     banner.map(item => {
       return (
-        <div key={item.encodeId} className="bannerItem">
+        <div key={item.encodeId} className="bannerItem" onClick={e => imgjump(item.encodeId)}>
           <img src={item.imageUrl} alt={item.typeTitle}/>
         </div>
       )

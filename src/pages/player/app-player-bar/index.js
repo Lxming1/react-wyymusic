@@ -1,8 +1,9 @@
 import { Slider } from 'antd'
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { PlayControWrapper } from './style'
-import { formatDate } from 'utils/format-utils'
+import { formatDate, getImgSize } from 'utils/format-utils'
 import { shallowEqual, useSelector } from 'react-redux'
+import defaultPic from 'assets/img/default_album.png'
 
 export const AppPlayerBar = memo(() => {
   // 播放暂停状态
@@ -13,17 +14,23 @@ export const AppPlayerBar = memo(() => {
   const [currentTime, setCurrentTime] = useState(0)
 
   const playStateTitle = ['随机', '单曲循环', '循环']
+
+  // 控制播放状态tip
+  const [showTip, setShowTip] = useState(false)
+  // 保存timeout事件状态
+  const [timer, setTimer] = useState(null)
   // 改变播放模式
   const changePlayState = () => {
-    if (playState + 1 < 3) {
-      setPlayState(playState+1)
-    }else {
-      setPlayState(0)
-    }
+    // 点击点击前清除上一次的setTimeout事件，所以要将该事件保存状态
+    clearTimeout(timer)
+    setShowTip(true)
+    setPlayState(() => playState + 1 < 3 ? playState + 1 : 0)
+    setTimer(setTimeout(() => setShowTip(false), 2000))
   }
   // 改变播放暂停状态
   const changeState = () => {
     setPlayOrStop(!playOrStop)
+    playOrStop ? songRef.current.play() : songRef.current.pause()
   }
   // 歌曲总时长
   const songTime = value => {
@@ -32,24 +39,69 @@ export const AppPlayerBar = memo(() => {
   }
   // onChange事件绑定slider，使该组件变成受控组件
   const changeProgress = time => {
+    // 拖动时禁止记录当前播放状态
+    setCanLoad(false)
+    // 点击或拖动播放条时保存当前时间戳便于右侧展示时间
     setCurrentTime(time)
   }
 
-  const onAfterChange = (x) => {
-    // console.log(x)
+  const onAfterChange = time => {
+    // 松开拖动条允许记录当前播放状态
+    setCanLoad(true)
+    // 拖动播放条获取松开时的时间戳，再改变当前音乐播放的位置
+    songRef.current.currentTime = time / 1000
   }
+  
   // 从store获取当前播放的音乐
   const { song } = useSelector(state => ({
     song: state.getIn(['songInfo', 'currentSong'])
   }), shallowEqual)
 
+  // 判断当前有无歌曲
+  const songIsNull = JSON.stringify(song) == "{}"
+
+  // 歌曲url信息
+  const songUrl = song.songUrl
+  
+  // audio标签ref
+  const songRef = useRef()
+
+  // 控制首次进入
+  const [first, setFirst] = useState(true)
+  // 切换音乐
   useEffect(() => {
-    // 切换音乐时从0开始播放
     setCurrentTime(0)
-  },[song])
+    // 首次进入时显示播放按钮（未播放状态）
+    if (first) {
+      setPlayOrStop(true)
+      setFirst(false)
+    }
+    return () => {
+      // 切换音乐时控制按钮状态
+      if (!first) {
+        songRef.current && songRef.current.load()
+        songRef.current && songRef.current.play()
+        setPlayOrStop(false)
+      }
+    }
+  }, [song])
+
+
+  const [canLoad, setCanLoad] = useState(true)
+  const songTimeUpdate = () => {
+    const currentSongTime = songRef.current.currentTime
+    //音乐播放时保存当前播放位置的时间戳
+    canLoad && setCurrentTime(currentSongTime * 1000)
+    if(songRef.current.duration === currentSongTime){
+      setPlayOrStop(true)
+    }
+  }
 
   return (
     <PlayControWrapper className="sprite_player">
+      <audio ref={songRef} onTimeUpdate={songTimeUpdate} loop={playState === 1}>
+        <source src={songUrl && songUrl.url} type={`audio/${songUrl && songUrl.type}`}/>
+      </audio>
       <div className="wrapper ">
         <div className="updn">
           <div className="left sprite_player">
@@ -66,12 +118,12 @@ export const AppPlayerBar = memo(() => {
           {/* 前面三个按钮和头像 */}
           <div className="btns">
             <div title="上一首" className="sprite_player preBtn"></div>
-            <div title="播放/暂停" onClick={e => changeState()}
+            <div title="播放/暂停" onClick={() => changeState()}
               className={(playOrStop ? 'playBtn' : 'stopBtn') + " sprite_player centerBtn"}></div>
             <div title="下一首" className="sprite_player nextBtn"></div>
           </div>
           <div className="picBox">
-            <img src={song && song.al && song.al.picUrl} alt="" className="pic"/>
+            <img src={song && song.al && getImgSize(song.al.picUrl, 34) || defaultPic} alt=""/>
             <a href="" className="picWrapper sprite_player"></a>
           </div>
           {/* 中间部分滑动条 */}
@@ -83,20 +135,21 @@ export const AppPlayerBar = memo(() => {
                   <span key={index}>{item.name}{index != arr.length-1 && '/'}</span>
                 ))
               }</span>
-              <a href="" title="来自专辑" className="sprite_player link"></a>
+              {!songIsNull && <a href="" title="来自专辑" className="sprite_player link"></a>}
             </div>
             <div className="playBar">
               <Slider
                 min={0}
                 max={song && song.dt}
+                tipFormatter={null} 
                 value={currentTime}   /** 受控组件 */
                 onChange={changeProgress} 
                 onAfterChange={onAfterChange}
-                tipFormatter={null} />
+              />
               <div className="time">
                 <span className="now-time">{songTime(currentTime)}</span>
                 <span className="divider">/</span>
-                <span className="duration">{song && songTime(song.dt)}</span>
+                <span className="duration">{!songIsNull ? songTime(song.dt) : '00:00'}</span>
               </div>
             </div>
           </div>
@@ -121,6 +174,8 @@ export const AppPlayerBar = memo(() => {
             </div>
           </div>
         </div>
+
+        <div className='tip sprite_player' style={{display: showTip ? 'block' : 'none'}}>{playStateTitle[playState]}</div>
       </div>
     </PlayControWrapper>
   )

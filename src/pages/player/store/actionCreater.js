@@ -1,4 +1,4 @@
-import { getSongApi } from "services/player";
+import { getSongApi, getSongUrl } from "services/player";
 import { CHANGECURRENTSONG } from "./contant";
 
 export const changeCurrentSong = currentSong => ({
@@ -9,7 +9,13 @@ export const changeCurrentSong = currentSong => ({
 export const getCurrentSong = (id) => {
   return dispatch => {
     getSongApi(id).then(res => {
-      dispatch(changeCurrentSong(res.songs[0]))
+      const songMes = {...res.songs[0]}
+
+      getSongUrl(id).then(res1 => {
+        songMes.songUrl = res1.data[0]
+        window.localStorage.setItem('currentSong', JSON.stringify(songMes))
+        dispatch(changeCurrentSong(songMes))
+      })
     })
   }
 }

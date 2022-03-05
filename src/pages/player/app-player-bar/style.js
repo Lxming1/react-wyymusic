@@ -9,7 +9,6 @@ export const PlayControWrapper = styled.div`
   background-position: 0 0;
   background-repeat: repeat;
   z-index: 999;
-  /* visibility: visible; */
 
   .wrapper{
     position: absolute;
@@ -130,11 +129,6 @@ export const PlayControWrapper = styled.div`
         margin-top: 6px;
         margin-right: 15px;
         position: relative;
-
-        .pic{
-          width: 34px;
-          height: 34px;
-        }
 
         .picWrapper{
           position: absolute;
@@ -314,7 +308,6 @@ export const PlayControWrapper = styled.div`
             }
           }
 
-
           .playlist{
             width: 59px;
             height: 36px;
@@ -345,6 +338,18 @@ export const PlayControWrapper = styled.div`
           }
         }
       }
+    }
+
+    .tip{
+      width: 81px;
+      height: 39px;
+      position: absolute;
+      right: 302px;
+      top: -29px;
+      line-height: 34px;
+      background-position: 0 -457px;
+      text-align: center;
+      color: #fff;
     }
   }
 

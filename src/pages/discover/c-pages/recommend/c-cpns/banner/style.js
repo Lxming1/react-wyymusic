@@ -30,6 +30,7 @@ export const BannerWrapper = styled.div`
     right: -68px;
     background-position: 0 -508px;
     cursor: pointer;
+    z-index: 999;
 
     :hover{
       background-position: 0 -578px;
