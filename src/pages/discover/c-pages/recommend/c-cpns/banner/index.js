@@ -1,6 +1,6 @@
 import React, { memo, useRef, useState, useLayoutEffect } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { getBanner } from 'pages/discover/store/actionCreater'
+import { getBanner } from 'pages/discover/c-pages/recommend/store/actionCreater'
 import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { Carousel } from 'antd';
 import { BannerWrapper } from './style';
@@ -9,7 +9,7 @@ const Banner = memo(() => {
   // 获取轮播图图片
   const dispatch = useDispatch()
   const { banner } = useSelector(state => ({
-    banner: state.getIn(['discoverInfo', 'bannerMes'])
+    banner: state.getIn(['recommendInfo', 'bannerMes'])
   }), shallowEqual)
 
   // 发起请求
@@ -50,6 +50,11 @@ const Banner = memo(() => {
   // 下载部分展示内容
   const downLoadMes = 'PC 安卓 iPhone WP iPad Mac 六大客户端'
 
+  // 点击轮播图播放图片
+  const imgjump = id => {
+    id.length === 10 && dispatch(getCurrentSong(id, true))
+  }
+
   // 自定义dots
   const myDots = dots => (
     <ul style={{height: '20px'}}>
@@ -64,15 +69,11 @@ const Banner = memo(() => {
     </ul>
   )
 
-  const imgjump = id => {
-    dispatch(getCurrentSong(id))
-  }
-
   // 轮播图片
   const bannerItem = (
     banner.map(item => {
       return (
-        <div key={item.encodeId} className="bannerItem" onClick={e => imgjump(item.encodeId)}>
+        <div key={item.typeTitle} className="bannerItem" onClick={e => imgjump(item.encodeId)}>
           <img src={item.imageUrl} alt={item.typeTitle}/>
         </div>
       )

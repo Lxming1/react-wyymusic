@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import RemindLogin from './c-cpns/remind-login'
 import Singer from './c-cpns/singer'
 import { MainRightWrapper } from './style'
-import { getArtist, getAnchor } from 'pages/discover/store/actionCreater'
+import { getArtist, getAnchor } from 'pages/discover/c-pages/recommend/store/actionCreater'
 import HotAnchor from './c-cpns/anchor'
 
 const MainRight = memo(() => {

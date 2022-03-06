@@ -17,16 +17,16 @@ const PlHeader = memo(({playlistItem}) => {
   }
   // 按钮信息
   const headerBtnMes = useMemo(() => ({
-    privileges: playlistItem.privileges,
+    song: playlistItem.tracks,
     subscribedCount: playlistItem.subscribedCount,
     shareCount: playlistItem.shareCount,
     commentCount: playlistItem.commentCount
-  }), [
-    playlistItem.privileges,
-    playlistItem.subscribedCount,
-    playlistItem.shareCount,
-    playlistItem.commentCount
-  ])
+  }), [playlistItem])
+  console.log(playlistItem)
+  //  playlistItem.privileges,
+  //   playlistItem.subscribedCount,
+  //   playlistItem.shareCount,
+  //   playlistItem.commentCount
   // 标签
   const tags = playlistItem.tags
   

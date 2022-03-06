@@ -11,14 +11,16 @@ export const BtnWrapper = styled.div`
     display: inline-block;
     width: 66px;
     padding-right: 5px;
-    height: 31px;
+    height: 32px;
     color: #fff;
     background-position: right -428px;
+    position: relative;
+    top: 1px;
+    cursor: pointer;
 
     i{
       width: 61px;
-      height: 31px;
-      line-height: 0;
+      height: 32px;
       display: flex;
       align-items: center;
       background-position: 0 -387px;
@@ -29,6 +31,10 @@ export const BtnWrapper = styled.div`
         height: 20px;
         background-position: 0 -1622px;
         margin: 2px 2px 2px 8px;
+      }
+
+      .playT{
+        margin-bottom: 2px;
       }
     }
 
@@ -49,8 +55,9 @@ export const BtnWrapper = styled.div`
     display: inline-block;
     position: relative;
     left: -3px;
+    top: 1px;
     width: 31px;
-    height: 31px;
+    height: 32px;
     background-position: 0 -1588px;
 
     :hover{
@@ -71,7 +78,7 @@ export const BtnWrapper = styled.div`
       min-width: 23px;
       padding-left: 28px;
       padding-right: 3px;
-      height: 31px;
+      height: 32px;
       line-height: 31px;
       
     }

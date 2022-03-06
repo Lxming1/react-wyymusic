@@ -6,7 +6,7 @@ import PlSonglist from './c-cpns/pl-songlist'
 
 const PlaylistLeft = memo(() => {
   const { playlistItem } = useSelector(state => ({
-    playlistItem: state.getIn(['discoverInfo','playlistDetailMes'])
+    playlistItem: state.getIn(['recommendInfo','playlistDetailMes'])
   }), shallowEqual)
   
   return (

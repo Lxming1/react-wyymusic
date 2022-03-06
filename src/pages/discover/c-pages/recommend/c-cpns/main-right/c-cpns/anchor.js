@@ -4,7 +4,7 @@ import { getImgSize } from 'utils/format-utils'
 
 const HotAnchor = memo(() => {
   const { anchor } = useSelector(state => ({
-    anchor: state.getIn(['discoverInfo', 'anchorMes'])
+    anchor: state.getIn(['recommendInfo', 'anchorMes'])
   }), shallowEqual)
   return (
     <div className="hotAnchor">

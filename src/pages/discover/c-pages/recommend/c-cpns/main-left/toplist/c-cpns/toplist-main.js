@@ -4,7 +4,7 @@ import ToplistItem from './toplist-item'
 
 const ToplistMain = memo(() => {
   const { toplist } = useSelector(state => ({
-    toplist: state.getIn(['discoverInfo', 'recToplistMes'])
+    toplist: state.getIn(['recommendInfo', 'recToplistMes'])
   }), shallowEqual)
   return (
     <div className='toplistMain'>

@@ -43,7 +43,7 @@ export const ToplistWrapper = styled.div`
 
           .title{
             position: relative;
-            top: 5px;
+            top: 6px;
             color: #333;
             display: block;
             font-size: 14px;

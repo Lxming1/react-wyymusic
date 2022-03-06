@@ -28,7 +28,7 @@ export const getArtistApi = () => {
 export const getAnchorApi = () => {
   return request('/dj/hot?limit=10')
 }
-
+// 歌单详情
 export const getPlaylistDetailApi = id => {
   return request(`/playlist/detail?id=${id}`)
 }

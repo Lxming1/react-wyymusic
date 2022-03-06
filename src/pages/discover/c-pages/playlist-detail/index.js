@@ -8,21 +8,20 @@ import { useDispatch } from 'react-redux'
 import { 
   getPlaylistDetail, 
   clearPlaylistDetail 
-} from 'pages/discover/store/actionCreater'
-import { useLocation } from 'react-router'
+} from 'pages/discover/c-pages/recommend/store/actionCreater'
+import { useLocation, Navigate } from 'react-router'
 
 const XMPlaylistItem = memo(() => {
   const dispatch = useDispatch()
   const location = useLocation()
   const currentPlID = location.search.substring(4, location.search.length)
-
   useEffect(() => {
     window.scrollTo(0, 0)
     dispatch(getPlaylistDetail(currentPlID))
     return () => dispatch(clearPlaylistDetail())
   }, [dispatch, currentPlID])
 
-  return (
+  return currentPlID !== '' ? (
     <PlaylistItemWrapper>
       <HeaderNav>
         <Nav/>
@@ -32,7 +31,7 @@ const XMPlaylistItem = memo(() => {
         <PlaylistRight/>
       </div>
     </PlaylistItemWrapper>
-  )
+  ) : <Navigate to="/404"/>
 })
 
 export default XMPlaylistItem

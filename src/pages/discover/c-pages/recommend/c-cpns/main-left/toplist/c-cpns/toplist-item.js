@@ -13,7 +13,7 @@ const ToplistItem = memo(({item, index}) => {
   const dispatch = useDispatch()
 
   const playSong = id => {
-    dispatch(getCurrentSong(id))
+    dispatch(getCurrentSong(id, true))
   }
 
   return (
@@ -37,7 +37,7 @@ const ToplistItem = memo(({item, index}) => {
             return (
               <li key={item.id} className='mainItem' title={item.name}>
                 <span style={{color: toplistColor(index)}}>{index+1}</span>
-                <a href='#/discover/toplist' className="name">{item.name}</a>
+                <a href={`#/song?id=${item.id}`} className="name">{item.name}</a>
                 <div className="oper">
                   <a title="播放" className="play sprite_02" onClick={e => playSong(item.id)}> </a>
                   <a href="#/" title="添加到播放列表" className="addToList sprite_icon2"> </a>

@@ -7,7 +7,7 @@ import DiscsItem from './discs-item'
 
 const DiscsMain = memo(() => {
   const { albumMes } = useSelector(state => ({
-    albumMes: state.getIn(['discoverInfo', 'albumMes'])
+    albumMes: state.getIn(['recommendInfo', 'albumMes'])
   }), shallowEqual)
 
   const carouselRef = useRef()

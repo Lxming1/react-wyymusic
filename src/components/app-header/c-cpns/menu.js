@@ -7,15 +7,11 @@ export default memo(function Menu() {
   const location = useLocation()
   const currentPath = location.pathname
   
-  const childClickActive = item => {
-    // path为'/playlist'时活跃
-    const playlistActive = currentPath === '/playlist' && item.title === '发现音乐'
-    // path包含'/discover'时活跃
-    const showDiver = currentPath.substring(0, 9) === '/discover'
-    // 切换子路由时保证当前发现音乐nav活跃
-    const isActive = (item.title === '发现音乐' && showDiver) || playlistActive
-    return isActive
-  }
+  const childClickActive = item => (
+    // 某些路由要使发现音乐处于活跃
+    ['/', '/discover', '/playlist', '/song'].includes(currentPath.substring(0, 9)) 
+    && item.title === '发现音乐'
+  )
   const menuActiveClassName = item => childClickActive(item) ? 'active' : undefined
   const showBottomIcon = item => (item.path === currentPath || childClickActive(item))
 

@@ -23,7 +23,7 @@ const PlSonglist = memo(({playlistItem}) => {
   const dispatch = useDispatch()
 
   const playSong = (id) => {
-    dispatch(getCurrentSong(id))
+    dispatch(getCurrentSong(id, true))
   }
 
   const songTime = value => {

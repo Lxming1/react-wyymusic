@@ -11,9 +11,9 @@ import {
 export default memo(function XMAppHeader() {
   const location = useLocation()
   const currentPath = location.pathname
-  const showDivider = path => currentPath.substring(0, 9) === path
-  const noDivider = currentPath === '/' || showDivider('/discover') || showDivider('/playlist')
-
+  // const showDivider = path => currentPath.substring(0, 9) === path
+  const noDivider = ['/', '/discover', '/playlist', '/song'].includes(currentPath.substring(0, 9))
+  // const noDivider = currentPath === '/' || showDivider('/discover') || showDivider('/playlist') || showDivider('/song')
   const mes = "音乐/视频/电台/用户"
   const [placeholder, setPlaceholder] = useState(mes)
 
@@ -22,12 +22,12 @@ export default memo(function XMAppHeader() {
       <div className="content wrap-v1">
         <HeaderLeft>
           <a href="#/" 
-            className="logo sprite_01">网易云音乐</a>   {/* logo-icon */}
-          <Menu/>                         {/* select-item */}
-          <i className="hot sprite_01"/>   {/* hot-icon */}
+            className="logo sprite_01">网易云音乐</a>    {/* logo-icon */}
+          <Menu/>                                       {/* select-item */}
+          <i className="hot sprite_01"/>                {/* hot-icon */}
         </HeaderLeft>
         <HeaderRight>
-          <div className="search sprite_01">  {/* search input */}
+          <div className="search sprite_01">            {/* search input */}
             <input 
               placeholder={placeholder} 
               onFocus={e => setPlaceholder('')} 

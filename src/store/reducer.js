@@ -1,8 +1,8 @@
 import { combineReducers } from "redux-immutable"  //性能优化 
-import discoverReducer from 'pages/discover/store/reducer'
+import recommendReducer from 'pages/discover/c-pages/recommend/store/reducer'
 import songReducer from 'pages/player/store/reducer'
 const reducer = combineReducers({
-  discoverInfo: discoverReducer,
+  recommendInfo: recommendReducer,
   songInfo: songReducer
 })
 

@@ -344,7 +344,7 @@ export const PlayControWrapper = styled.div`
       width: 81px;
       height: 39px;
       position: absolute;
-      right: 302px;
+      right: 303px;
       top: -29px;
       line-height: 34px;
       background-position: 0 -457px;
@@ -352,6 +352,4 @@ export const PlayControWrapper = styled.div`
       color: #fff;
     }
   }
-
-  
 `

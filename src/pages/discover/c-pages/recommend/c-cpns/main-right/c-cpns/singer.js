@@ -4,7 +4,7 @@ import { getImgSize } from 'utils/format-utils'
 
 const Singer = memo(() => {
   const { singer } = useSelector(state => ({
-    singer: state.getIn(['discoverInfo','artistMes'])
+    singer: state.getIn(['recommendInfo','artistMes'])
   }), shallowEqual)
   return (
     <div className="singer">

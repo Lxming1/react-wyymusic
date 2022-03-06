@@ -7,3 +7,11 @@ export const getSongApi = id => {
 export const getSongUrl = id => {
   return request(`/song/url?id=${id}`)
 }
+
+export const getCommentCount = id => {
+  return request(`/comment/music?id=${id}`)
+}
+
+export const getLyric = id => {
+  return request(`/lyric?id=${id}`)
+}
