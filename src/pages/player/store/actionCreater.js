@@ -1,5 +1,6 @@
 import { getSongApi, getSongUrl, getCommentCount, getLyric } from "services/player";
-import { ADDSONGPAGEMES, CHANGECURRENTSONG, CLEARSONGPAGEMES } from "./contant";
+import { ADDSONGPAGEMES, CHANGESONGLIST, CHANGECURRENTSONG, CLEARSONGPAGEMES, CHANGECURRENTSONGINDEX } from "./contant";
+import store from 'store'
 
 // 播放中的音乐信息
 export const changeCurrentSong = currentSong => ({
@@ -16,8 +17,18 @@ export const clearSongPageMes = () => ({
   type: CLEARSONGPAGEMES
 })
 
+export const changeSongList = songList => ({
+  type: CHANGESONGLIST,
+  songList
+})
+
+export const changCurrentSongIndex = index => ({
+  type: CHANGECURRENTSONGINDEX,
+  index
+})
+
 export const getCurrentSong = (id, isPlay) => {
-  return dispatch => {
+  return (dispatch, getState) => {
     getSongApi(id).then(res => {
       const songMes = {...res.songs[0]}
       
@@ -32,8 +43,32 @@ export const getCurrentSong = (id, isPlay) => {
           songMes.lyric = res3.lrc.lyric
         })
       ]).then(() => {
-        window.localStorage.setItem('currentSong', JSON.stringify(songMes))
-        isPlay ? dispatch(changeCurrentSong(songMes)) : dispatch(addSongPageMes(songMes))
+        if(isPlay) {
+          const songList = getState().getIn(['songInfo', 'songList'])
+          let currentIndex;
+          let haveSame = false
+          if (songList.length === 0) {
+            songList.push(songMes)
+            currentIndex = 0
+          } else {
+            for (let i in songList) {
+              if (songList[i].id === songMes.id){
+                haveSame = true
+                currentIndex = i
+                break
+              }else {
+                currentIndex = songList.length
+              }
+            }
+            !haveSame && songList.push(songMes) 
+          }
+          dispatch(changeSongList(songList))
+          dispatch(changCurrentSongIndex(parseInt(currentIndex)))
+          dispatch(changeCurrentSong(songMes))
+          // window.localStorage.setItem('currentSong', JSON.stringify(songMes))
+        } else {
+          dispatch(addSongPageMes(songMes))
+        }
       })
     })
   }

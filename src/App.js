@@ -10,10 +10,10 @@ import { changeCurrentSong } from './pages/player/store/actionCreater';
 export default memo(function App() {
   const dispatch = useDispatch()
   useEffect(() => {
-    if (window.localStorage.getItem('currentSong')) {
-      const currentSong = JSON.parse(window.localStorage.getItem('currentSong'))
-      dispatch(changeCurrentSong(currentSong))
-    }
+    // if (window.localStorage.getItem('currentSong')) {
+    //   const currentSong = JSON.parse(window.localStorage.getItem('currentSong'))
+    //   dispatch(changeCurrentSong(currentSong))
+    // }
   }, [])
   return (
     <HashRouter>

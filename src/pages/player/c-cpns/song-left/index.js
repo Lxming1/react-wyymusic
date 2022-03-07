@@ -1,14 +1,10 @@
-import React, { Fragment, memo, useEffect, useMemo, useState } from 'react'
+import React, { Fragment, memo, useMemo, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { MainLeft } from './style'
 import { getImgSize } from 'utils/format-utils'
 import VariousBtn from 'components/variousBtn'
-import { getLyric } from 'services/player'
 
 const SongLeft = memo(() => {
-  // const { playlistItem } = useSelector(state => ({
-  //   playlistItem: state.getIn(['recommendInfo','playlistDetailMes'])
-  // }), shallowEqual)
   const { songPageMes } = useSelector(state => ({
     songPageMes: state.getIn(['songInfo', 'songPageMes'])
   }), shallowEqual)
@@ -24,6 +20,10 @@ const SongLeft = memo(() => {
 
   const songPic = songPageMes.al && getImgSize(songPageMes.al.picUrl, 130)
   const songAlbum = songPageMes.al && songPageMes.al.name
+  const haveTns = ![undefined, ''].includes(songPageMes.tns)
+  const haveAlia = songPageMes.alia && songPageMes.alia.length !== 0
+  const showSmallIntro = haveAlia || haveTns
+  const SmallIntro = !haveTns ? songPageMes.alia : songPageMes.tns
 
   const lyric = (
     songPageMes.lyric &&
@@ -64,9 +64,7 @@ const SongLeft = memo(() => {
             <span className="itemName">
               {songPageMes.name}
               {songPageMes.mv !== 0 && <i className='sprite_icon2 mvIcon'></i>}
-              <span className='tns'>
-                {songPageMes.tns || songPageMes.alia}
-              </span>
+              {showSmallIntro && <span className='tns'>{SmallIntro}</span>}
             </span>
           </div>
           

@@ -55,7 +55,7 @@ const PlSonglist = memo(({playlistItem}) => {
                     <span className='index'>{index+1}</span>
                     <i className="sprite_table playIcon" onClick={e => playSong(item.id)}></i>
                   </td>
-                  <td className='name' title={item.name}><a href="#/">{item.name}</a></td>
+                  <td className='name' title={item.name}><a href={`#/song?id=${item.id}`}>{item.name}</a></td>
                   <td><span style={{color:'#666'}}>{songTime(item.dt)}</span></td>
                   <td title={item.ar.map(item => item.name).join('/')}>
                     <a href="#/" style={{color:'#333'}}>{item.ar.map(item => item.name).join('/')}</a>

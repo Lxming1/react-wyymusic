@@ -130,6 +130,11 @@ export const PlayControWrapper = styled.div`
         margin-right: 15px;
         position: relative;
 
+        img{
+          width: 100%;
+          height: 100%;
+        }
+
         .picWrapper{
           position: absolute;
           top: 0px;
@@ -351,5 +356,10 @@ export const PlayControWrapper = styled.div`
       text-align: center;
       color: #fff;
     }
+  }
+
+  .songWrod{
+    position: absolute;
+    padding: 10px;
   }
 `
