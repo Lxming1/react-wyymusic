@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import PlaylistHeader from 'components/playlisst-header'
 import { formatDate } from 'utils/format-utils'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getCurrentSong } from 'pages/player/store/actionCreater'
 
 const PlSonglist = memo(({playlistItem}) => {
@@ -21,6 +21,10 @@ const PlSonglist = memo(({playlistItem}) => {
     )
   }
   const dispatch = useDispatch()
+
+  const { currentSong } = useSelector(state => ({
+    currentSong: state.getIn(['songInfo', 'currentSong'])
+  }))
 
   const playSong = (id) => {
     dispatch(getCurrentSong(id, true))
@@ -53,7 +57,8 @@ const PlSonglist = memo(({playlistItem}) => {
                 <tr key={item.id} style={index % 2 === 0 ? {backgroundColor: '#f7f7f7'} : {}}>
                   <td style={{display: 'flex', justifyContent:'space-between'}}>
                     <span className='index'>{index+1}</span>
-                    <i className="sprite_table playIcon" onClick={e => playSong(item.id)}></i>
+                    <i className="sprite_table playIcon" onClick={e => playSong(item.id)}
+                        style={item.id === currentSong.id ? {backgroundPosition: '-20px -128px'} : {}}/>
                   </td>
                   <td className='name' title={item.name}><a href={`#/song?id=${item.id}`}>{item.name}</a></td>
                   <td><span style={{color:'#666'}}>{songTime(item.dt)}</span></td>

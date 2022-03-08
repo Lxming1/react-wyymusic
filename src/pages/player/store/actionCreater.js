@@ -1,5 +1,5 @@
 import { getSongApi, getSongUrl, getCommentCount, getLyric } from "services/player";
-import { ADDSONGPAGEMES, CHANGESONGLIST, CHANGECURRENTSONG, CLEARSONGPAGEMES, CHANGECURRENTSONGINDEX } from "./contant";
+import { ADDSONGPAGEMES, CHANGESONGLIST, CHANGECURRENTSONG, CHANGECURRENTSONGINDEX } from "./contant";
 import store from 'store'
 
 // 播放中的音乐信息
@@ -11,10 +11,6 @@ export const changeCurrentSong = currentSong => ({
 export const addSongPageMes = songMes => ({
   type: ADDSONGPAGEMES,
   songMes
-})
-
-export const clearSongPageMes = () => ({
-  type: CLEARSONGPAGEMES
 })
 
 export const changeSongList = songList => ({
@@ -31,7 +27,6 @@ export const getCurrentSong = (id, isPlay) => {
   return (dispatch, getState) => {
     getSongApi(id).then(res => {
       const songMes = {...res.songs[0]}
-      
       Promise.all([
         getSongUrl(id).then(res1 => {
           songMes.songUrl = res1.data[0]
@@ -43,24 +38,21 @@ export const getCurrentSong = (id, isPlay) => {
           songMes.lyric = res3.lrc.lyric
         })
       ]).then(() => {
+        
         if(isPlay) {
-          const songList = getState().getIn(['songInfo', 'songList'])
+          const songList = [...getState().getIn(['songInfo', 'songList'])]
           let currentIndex;
-          let haveSame = false
           if (songList.length === 0) {
             songList.push(songMes)
             currentIndex = 0
           } else {
-            for (let i in songList) {
-              if (songList[i].id === songMes.id){
-                haveSame = true
-                currentIndex = i
-                break
-              }else {
-                currentIndex = songList.length
-              }
+            const index = songList.findIndex(item => item.id === songMes.id)
+            if (index === -1){
+              currentIndex = songList.length
+              songList.push(songMes)
+            }else {
+              currentIndex = index
             }
-            !haveSame && songList.push(songMes) 
           }
           dispatch(changeSongList(songList))
           dispatch(changCurrentSongIndex(parseInt(currentIndex)))

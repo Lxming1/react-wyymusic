@@ -1,6 +1,6 @@
 import React, { Fragment, memo, useEffect, useMemo, useRef, useState } from 'react'
 import { getImgSize, formatDate } from 'utils/format-utils'
-import VariousBtn from 'components/variousBtn'
+import VariousBtn from 'components/various-btn'
 
 const PlHeader = memo(({playlistItem}) => {
   const creator = playlistItem.creator
@@ -22,7 +22,6 @@ const PlHeader = memo(({playlistItem}) => {
     shareCount: playlistItem.shareCount,
     commentCount: playlistItem.commentCount
   }), [playlistItem])
-  console.log(playlistItem)
   //  playlistItem.privileges,
   //   playlistItem.subscribedCount,
   //   playlistItem.shareCount,

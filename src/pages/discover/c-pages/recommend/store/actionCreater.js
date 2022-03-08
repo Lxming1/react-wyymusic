@@ -118,10 +118,6 @@ export const changePlaylistDetail = playlistItem => ({
   playlistItem
 })
 
-export const clearPlaylistDetail = () => ({
-  type: ClEARPLISTDETAIL
-})
-
 export const getPlaylistDetail = id => {
   return dispatch => {
     getPlaylistDetailApi(id).then(res => {

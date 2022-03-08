@@ -36,8 +36,6 @@ export default function reducer(state = initState, actions) {
       return state.set('anchorMes', actions.anchor)
     case GETPLAYLISTDETAIL:
       return state.set('playlistDetailMes', actions.playlistItem)
-    case ClEARPLISTDETAIL:
-      return state.set('playlistDetailMes', {})
     default:
       return state
   }

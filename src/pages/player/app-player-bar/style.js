@@ -360,6 +360,53 @@ export const PlayControWrapper = styled.div`
 
   .songWrod{
     position: absolute;
-    padding: 10px;
+    color: #123456;
+    left: 50%;
+    font-size: 26px;
+    transform: translate(-50%);
+    top: -140px;
+    cursor: default;
+    height: 100px;
+    min-width: 600px;
+    padding: 12px 30px 10px 30px;
+    line-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+    opacity: 0.9;
+    
+    :hover{
+      background: rgba(102,102,102,0.2);
+
+      .close{
+        display: block;
+      }
+    }
+    .close{
+      display: none;
+      position: absolute;
+      color: #fff;
+      height: 20px;
+      width: 20px;
+      line-height: 20px;
+      right: 0;
+      top: 2px;
+      font-size: 14px;
+      cursor: pointer;
+      
+
+      :hover{
+        background: rgba(112,112,112,0.2);
+      }
+    }
+    span{
+      display: block;
+      text-align: center;
+    }
+    .small{
+      font-size: 20px;
+      opacity: 0.8;
+    }
   }
 `

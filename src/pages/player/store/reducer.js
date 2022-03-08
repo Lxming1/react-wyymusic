@@ -3,7 +3,6 @@ import {
   ADDSONGPAGEMES,
   CHANGESONGLIST,
   CHANGECURRENTSONG,
-  CLEARSONGPAGEMES,
   CHANGECURRENTSONGINDEX
 } from "./contant"
 
@@ -22,14 +21,13 @@ export default function reducer(state = initState, actions) {
     case ADDSONGPAGEMES:
       return state.set('songPageMes', actions.songMes)
 
-    case CLEARSONGPAGEMES:
-      return state.set('songPageMes', {})
-
     case CHANGESONGLIST:
       return state.set('songList', actions.songList)
 
     case CHANGECURRENTSONGINDEX:
       return state.set('currentSongIndex', actions.index)
+
+      
     default:
       return state
   }

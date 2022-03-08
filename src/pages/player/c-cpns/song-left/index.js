@@ -2,14 +2,14 @@ import React, { Fragment, memo, useMemo, useState } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
 import { MainLeft } from './style'
 import { getImgSize } from 'utils/format-utils'
-import VariousBtn from 'components/variousBtn'
+import VariousBtn from 'components/various-btn'
 
 const SongLeft = memo(() => {
   const { songPageMes } = useSelector(state => ({
     songPageMes: state.getIn(['songInfo', 'songPageMes'])
   }), shallowEqual)
-  console.log(songPageMes)
   // const [lyric, setLyric] = useState()
+
 
   const headerBtnMes = useMemo(() => ({
     song: songPageMes.id,
@@ -17,6 +17,7 @@ const SongLeft = memo(() => {
     shareCount: '分享',
     commentCount: songPageMes.commentCount
   }), [songPageMes])
+  console.log(songPageMes)
 
   const songPic = songPageMes.al && getImgSize(songPageMes.al.picUrl, 130)
   const songAlbum = songPageMes.al && songPageMes.al.name

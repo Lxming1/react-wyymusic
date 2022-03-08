@@ -7,7 +7,7 @@ import PlaylistRight from './c-cpns/playlist-right'
 import { useDispatch } from 'react-redux'
 import { 
   getPlaylistDetail, 
-  clearPlaylistDetail 
+  changePlaylistDetail 
 } from 'pages/discover/c-pages/recommend/store/actionCreater'
 import { useLocation, Navigate } from 'react-router'
 
@@ -18,7 +18,7 @@ const XMPlaylistItem = memo(() => {
   useEffect(() => {
     window.scrollTo(0, 0)
     dispatch(getPlaylistDetail(currentPlID))
-    return () => dispatch(clearPlaylistDetail())
+    return () => dispatch(changePlaylistDetail({}))
   }, [dispatch, currentPlID])
 
   return currentPlID !== '' ? (

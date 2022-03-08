@@ -6,7 +6,7 @@ import SongLeft from './c-cpns/song-left'
 import SongRight from './c-cpns/song-right'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { clearSongPageMes, getCurrentSong } from './store/actionCreater'
+import { addSongPageMes, getCurrentSong } from './store/actionCreater'
 
 const XMSong = memo(() => {
   const dispatch = useDispatch()
@@ -14,7 +14,7 @@ const XMSong = memo(() => {
   const currentSongID = location.search.substring(4, location.search.length)
   useEffect(() => {
     dispatch(getCurrentSong(currentSongID, false))
-    return () => dispatch(clearSongPageMes())
+    return () => dispatch(addSongPageMes({}))
   }, [dispatch, currentSongID])
 
   return (

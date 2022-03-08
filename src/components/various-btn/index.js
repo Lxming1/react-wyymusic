@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { wan } from 'utils/format-utils'
-import { getCurrentSong } from '../../pages/player/store/actionCreater'
+import { changeSongList, getCurrentSong } from 'pages/player/store/actionCreater'
 import { BtnWrapper } from './style'
 
 const VariousBtn = memo(({song, subscribedCount, shareCount, commentCount}) => {
@@ -12,6 +12,7 @@ const VariousBtn = memo(({song, subscribedCount, shareCount, commentCount}) => {
   const playSong = () => {
     if (typeof song === 'object'){
       dispatch(getCurrentSong(song[0].id, true))
+      dispatch(changeSongList(song))
     } else if (typeof song === 'number') {
       dispatch(getCurrentSong(song, true))
     }
