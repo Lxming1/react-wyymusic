@@ -38,7 +38,7 @@ export const getCurrentSong = (id, isPlay) => {
           songMes.lyric = res3.lrc.lyric
         })
       ]).then(() => {
-        
+        if(!songMes.songUrl.url) return
         if(isPlay) {
           const songList = [...getState().getIn(['songInfo', 'songList'])]
           let currentIndex;

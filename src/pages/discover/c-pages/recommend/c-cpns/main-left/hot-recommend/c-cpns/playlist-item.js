@@ -7,6 +7,7 @@ import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { useDispatch } from 'react-redux'
 import { getSongApi } from 'services/player'
 import { changeSongList } from 'pages/player/store/actionCreater'
+import { getSongUrl } from '../../../../../../../../services/player'
 
 const PlaylistItem = memo(({playlistItem}) => {
   const dispatch = useDispatch()
@@ -15,22 +16,23 @@ const PlaylistItem = memo(({playlistItem}) => {
     getPlaylistDetailApi(playlistItem.id).then(res => {
       // res.privileges && dispatch(getCurrentSong(res.privileges[0].id, true))
       const mySongList = []
-      const promiseList = []
       let playFrist = true
-      res.privileges.map((item, index) => {
+      res.privileges.forEach((item, index) => {
         const id = item.id
-        promiseList.push(getSongApi(id).then(res => {
+        getSongApi(id).then(res => {
           const songMes = {...res.songs[0]}
-          mySongList.push(songMes)
-          if (playFrist) {
-            dispatch(getCurrentSong(mySongList[0].id, true))
-            playFrist = false
-          }
-        }))
+          getSongUrl(id).then(res => {
+            if(res.data[0].url) {
+              if (playFrist) {
+                dispatch(getCurrentSong(id, true))
+                playFrist = false
+              }
+              mySongList.push(songMes)
+            }
+          })
+        })
       })
-      Promise.all(promiseList).then(() => {
-        dispatch(changeSongList(mySongList))
-      })
+      dispatch(changeSongList(mySongList))
     })
   }
 

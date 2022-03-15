@@ -365,25 +365,37 @@ export const PlayControWrapper = styled.div`
     font-size: 26px;
     transform: translate(-50%);
     top: -140px;
-    cursor: default;
-    height: 100px;
-    min-width: 600px;
-    padding: 12px 30px 10px 30px;
+    padding: 18px 50px 16px 50px;
     line-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
     font-weight: bolder;
     opacity: 0.9;
+    cursor: default;
+    white-space: nowrap;
+
+    .lyricMain{
+      span{
+        /* animation: change 6s; */
+        
+        /* @keyframes change {
+          0% {
+              color: #123456;
+          }
+          100% {
+              color: #666;
+          }
+        } */
+      }
+    }
     
     :hover{
       background: rgba(102,102,102,0.2);
 
-      .close{
+      .xx{
         display: block;
       }
     }
-    .close{
+    .xx{
       display: none;
       position: absolute;
       color: #fff;
@@ -394,7 +406,6 @@ export const PlayControWrapper = styled.div`
       top: 2px;
       font-size: 14px;
       cursor: pointer;
-      
 
       :hover{
         background: rgba(112,112,112,0.2);
