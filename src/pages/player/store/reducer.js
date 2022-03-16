@@ -27,7 +27,6 @@ export default function reducer(state = initState, actions) {
     case CHANGECURRENTSONGINDEX:
       return state.set('currentSongIndex', actions.index)
 
-      
     default:
       return state
   }

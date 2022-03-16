@@ -3,36 +3,16 @@ import { PlayListItem } from '../style'
 import { getImgSize } from 'utils/format-utils'
 import { wan } from 'utils/format-utils'
 import { getPlaylistDetailApi } from 'services/recommend'
-import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { useDispatch } from 'react-redux'
-import { getSongApi } from 'services/player'
-import { changeSongList } from 'pages/player/store/actionCreater'
-import { getSongUrl } from '../../../../../../../../services/player'
+import { addAndPlayOne } from 'utils/play-lot-song'
 
 const PlaylistItem = memo(({playlistItem}) => {
   const dispatch = useDispatch()
   
   const playSong = () => {
-    getPlaylistDetailApi(playlistItem.id).then(res => {
-      // res.privileges && dispatch(getCurrentSong(res.privileges[0].id, true))
-      const mySongList = []
-      let playFrist = true
-      res.privileges.forEach((item, index) => {
-        const id = item.id
-        getSongApi(id).then(res => {
-          const songMes = {...res.songs[0]}
-          getSongUrl(id).then(res => {
-            if(res.data[0].url) {
-              if (playFrist) {
-                dispatch(getCurrentSong(id, true))
-                playFrist = false
-              }
-              mySongList.push(songMes)
-            }
-          })
-        })
-      })
-      dispatch(changeSongList(mySongList))
+    const id = playlistItem.id
+    getPlaylistDetailApi(id).then(res => {
+      addAndPlayOne(res.playlist.tracks, dispatch)
     })
   }
 

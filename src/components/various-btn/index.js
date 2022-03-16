@@ -1,31 +1,17 @@
 import React, { memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { wan } from 'utils/format-utils'
-import { changeSongList, getCurrentSong } from 'pages/player/store/actionCreater'
+import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { BtnWrapper } from './style'
-import { getSongUrl } from '../../services/player'
+import { addAndPlayOne } from '../../utils/play-lot-song'
 
 const VariousBtn = memo(({song, subscribedCount, shareCount, commentCount}) => {
 
   const dispatch = useDispatch()
 
-  // console.log(song)
   const playSong = () => {
     if (typeof song === 'object'){
-      let mySongList = []
-      let firstPlay = true
-      song.forEach((item, index) => {
-        getSongUrl(item.id).then(res => {
-          if (res.data[0].url) {
-            if(firstPlay){
-              dispatch(getCurrentSong(song[index].id, true))
-              firstPlay = false
-            }
-            mySongList.push(item)
-          }
-        })
-      })
-      dispatch(changeSongList(mySongList))
+      addAndPlayOne(song, dispatch)
     } else if (typeof song === 'number') {
       dispatch(getCurrentSong(song, true))
     }

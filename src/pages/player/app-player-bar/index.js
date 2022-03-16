@@ -1,8 +1,9 @@
-import { Slider } from 'antd'
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { Slider } from 'antd'
 import { PlayControWrapper } from './style'
 import { formatDate, getImgSize } from 'utils/format-utils'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { parseLyric } from 'utils/parse-lyric'
 import defaultPic from 'assets/img/default_album.png'
 import { getCurrentSong } from '../store/actionCreater'
 
@@ -25,27 +26,28 @@ export const AppPlayerBar = memo(() => {
   const [playState, setPlayState] = useState(0)         // 循环、单曲循环、随机  
   const [showTip, setShowTip] = useState(false)         // 点击循环、单曲循环、随机的tip
   const [timer, setTimer] = useState(null)              // 保存tip的setTimeout事件
-  const [showLyric, setShowLyric] = useState(false)
+  const [showLyric, setShowLyric] = useState(false)     // 控制歌词显示
+  const [lyricState, setLyricState] = useState(null)    // 保存歌词
 
   /**     ref      */
   const songRef = useRef()    // audio标签ref
-  const sliderRef = useRef()
+  const sliderRef = useRef()  // 滑动条ref
   
   /**     变量      */
   const songIsNull = JSON.stringify(song) === "{}"                  //当前有没有音乐
   const songTime = value => formatDate(new Date(value), 'mm:ss')    //当前播放的时间
-  const songUrl = song && song.songUrl && song.songUrl.url          //音乐的地址
+  const songUrl = song.songUrl?.url          //音乐的地址
   const playAndPauseClassName =                                     //播放暂停按钮切换的className
     (playOrStop ? 'playBtn' : 'stopBtn') 
     + " sprite_player centerBtn"; 
-  const arPic = (song && song.al && getImgSize(song.al.picUrl, 34)) || defaultPic   //图片
-  const songName = song && song.name      //歌曲名
+  const arPic = song.al?.picUrl && (getImgSize(song.al.picUrl, 34)) || defaultPic   //图片
+  const songName = song?.name      //歌曲名
   const arName = (                        //作者名
-    song && song.ar && song.ar.map((item, index, arr) => (
+    song.ar?.map((item, index, arr) => (
       <span key={index}>{item.name}{index !== arr.length-1 && '/'}</span>
     ))
   )
-  const songAllTime = useMemo(() => song && song.dt, [song])          //歌曲总时长（时间戳）
+  const songAllTime = useMemo(() => song?.dt, [song])          //歌曲总时长（时间戳）
   const duration = !songIsNull ? songTime(songAllTime) : '00:00'      //歌曲总时长（格式化后）
   const playStateTitle = ['随机', '单曲循环', '循环']                  //播放状态
 
@@ -58,7 +60,6 @@ export const AppPlayerBar = memo(() => {
   }
 
   const changeState = () => {                     // 改变播放暂停状态
-    
     setPlayOrStop(!playOrStop)
     playOrStop ? songRef.current.play() : songRef.current.pause()
   }
@@ -99,23 +100,7 @@ export const AppPlayerBar = memo(() => {
       dispatch(getCurrentSong(songList[currentSongIndex+1].id, true))
     }
   }
-  
-  const lyricTimeAndW = []
-  
-  song?.lyric?.split('\n').forEach(item => {
-    const minAndSeconds = item.slice(1).split(']')[0].split(':')      //时间
-    const lyric = item.split(']')[1]?.trim()                          //歌词
-    const min = minAndSeconds[0]
-    const seconds = minAndSeconds[1]
-    const timeChuo = (min*60 + parseFloat(seconds)) * 1000
-    const obj = {
-      time: timeChuo,
-      content: lyric
-    }
-    console.log(1)
-    lyricTimeAndW.push(obj)
-  })?.filter((item, index, arr) => index !== arr.length-1)
-  console.log(lyricTimeAndW.length)
+
   const songTimeUpdate = e => {                                 //返回歌曲播放状态
     const currentSongTime = e.target.currentTime
     canLoad && setCurrentTime(currentSongTime * 1000)           //音乐播放时保存当前播放位置的时间戳
@@ -127,17 +112,17 @@ export const AppPlayerBar = memo(() => {
         setPlayOrStop(false)
       } else {
         playState === 2 && playNext()
-        if (playState === 0) {
+        if (playState === 0) {        // 随机播放
           const randomNum = Math.floor(Math.random()*songList.length)
           dispatch(getCurrentSong(songList[randomNum].id, true))
         }
       }                                    
     }
   }
-
+  
   /***    生命周期      */
   useEffect(() => {
-    
+    setLyricState(parseLyric(song.lyric))     //保存歌词
     !songUrl && playNext()
     setCurrentTime(0)
     if (first) {
@@ -150,23 +135,21 @@ export const AppPlayerBar = memo(() => {
       }
       setPlayOrStop(false) 
     }
+    return () => setCanLoad(true)
   }, [song])
 
   return (
     <PlayControWrapper className="sprite_player">
-      <audio ref={songRef} onTimeUpdate={songTimeUpdate} loop={playState === 1} src={songUrl}>
-      </audio>
+      <audio ref={songRef} onTimeUpdate={songTimeUpdate} loop={playState === 1} src={songUrl} />
       { showLyric &&
         <span className='songWrod'>
           <span className='xx' onClick={e => setShowLyric(false)}>X</span>
-          { lyricTimeAndW &&
-            lyricTimeAndW.map((item, index, arr) => {
+          {
+            lyricState?.map((item, index, arr) => {
               if(item.time <= currentTime && arr[index+1].time >= currentTime){
                 return (
                   <span key={index} className="lyricMain">
-                    { (item.content !== '') && 
-                      <span>{item.content}</span>
-                    }
+                    { (item.content !== '') && <span>{item.content}</span> }
                     { (arr[index+1].content !== '') && 
                       <span className={item.content !== '' ? 'small' : ''}>
                         {arr[index+1].content}
@@ -175,7 +158,6 @@ export const AppPlayerBar = memo(() => {
                   </span>
                 )
               }
-              return 
             })
           }
         </span>

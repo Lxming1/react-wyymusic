@@ -69,17 +69,19 @@ export const changeRecommendToplist = (recommendToplist) => ({
 
 export const getRecommedToplist = () => {
   return dispatch => {
-    getToplistApi().then(res => {
-      const mes = res.list.filter((item, index) => index < 3)
-      const promiseList = []
-      for (let i in mes) {
-        promiseList.push(getToplistItemApi(mes[i]).then(res1 => {
-          mes[i].tracks = res1.playlist.tracks.filter((item, index) => index < 10)
-        }))
-      }
-      Promise.all(promiseList).then(res => {
-        dispatch(changeRecommendToplist(mes))
-      })
+    const promiseList = []
+    const ids = [19723756, 3779629, 2884035]
+    const mes = []
+    for (let id of ids) {
+      promiseList.push(getToplistItemApi(id).then(res1 => {
+        const songObj = res1.playlist
+        const tracks = songObj.tracks?.filter((item, index) => index < 10)
+        songObj.tracks = tracks
+        mes.push(songObj)
+      }))
+    }
+    Promise.all(promiseList).then(res => {
+      dispatch(changeRecommendToplist(mes))
     })
   }
 }

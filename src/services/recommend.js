@@ -17,8 +17,8 @@ export const getToplistApi = () => {
   return request('/toplist')
 }
 // 榜单详情
-export const getToplistItemApi = item => {
-  return request(`/top/list?id=${item.id}`)
+export const getToplistItemApi = id => {
+  return request(`/top/list?id=${id}`)
 }
 // 入驻歌手
 export const getArtistApi = () => {

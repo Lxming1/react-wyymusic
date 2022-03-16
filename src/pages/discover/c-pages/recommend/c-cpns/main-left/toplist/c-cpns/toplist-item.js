@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import { getImgSize } from 'utils/format-utils'
 import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { useDispatch } from 'react-redux'
+import { addAndPlayOne } from 'utils/play-lot-song'
 
 const ToplistItem = memo(({item, index}) => {
   const leftArr = [20, 20.4, 20.9]
@@ -15,6 +16,9 @@ const ToplistItem = memo(({item, index}) => {
   const playSong = id => {
     dispatch(getCurrentSong(id, true))
   }
+  const allToList = () => {
+    addAndPlayOne(item.tracks, dispatch)
+  }
 
   return (
     <div className='toplistItem'>
@@ -26,14 +30,14 @@ const ToplistItem = memo(({item, index}) => {
         <div className='rightMes'>
           <a href={jumpLink} className="title" title={item.name}>{item.name}</a>
           <div className='rightIcon'>
-            <a className='playIcon sprite_02 icon' title="播放" onClick={e => playSong(item.tracks[0].id)}> </a>
+            <a className='playIcon sprite_02 icon' title="播放" onClick={e => allToList()}> </a>
             <a className='collectIcon sprite_02 icon' title='收藏' href="#/"> </a>
           </div>
         </div>
       </div>
       <ol className='main'>
         {
-          item.tracks.map((item, index) => {
+          item.tracks?.map((item, index) => {
             return (
               <li key={item.id} className='mainItem' title={item.name}>
                 <span style={{color: toplistColor(index)}}>{index+1}</span>

@@ -1,6 +1,5 @@
 import { getSongApi, getSongUrl, getCommentCount, getLyric } from "services/player";
 import { ADDSONGPAGEMES, CHANGESONGLIST, CHANGECURRENTSONG, CHANGECURRENTSONGINDEX } from "./contant";
-import store from 'store'
 
 // 播放中的音乐信息
 export const changeCurrentSong = currentSong => ({
@@ -28,17 +27,17 @@ export const getCurrentSong = (id, isPlay) => {
     getSongApi(id).then(res => {
       const songMes = {...res.songs[0]}
       Promise.all([
-        getSongUrl(id).then(res1 => {
+        isPlay && getSongUrl(id).then(res1 => {
           songMes.songUrl = res1.data[0]
         }),
-        getCommentCount(id).then(res2 => {
+        isPlay && getCommentCount(id).then(res2 => {
           songMes.commentCount = res2.total
         }),
         getLyric(id).then(res3 => {
           songMes.lyric = res3.lrc.lyric
         })
       ]).then(() => {
-        if(!songMes.songUrl.url) return
+        if(!songMes.songUrl?.url) return
         if(isPlay) {
           const songList = [...getState().getIn(['songInfo', 'songList'])]
           let currentIndex;
