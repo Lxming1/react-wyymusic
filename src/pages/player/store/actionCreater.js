@@ -27,10 +27,10 @@ export const getCurrentSong = (id, isPlay) => {
     getSongApi(id).then(res => {
       const songMes = {...res.songs[0]}
       Promise.all([
-        isPlay && getSongUrl(id).then(res1 => {
+        getSongUrl(id).then(res1 => {
           songMes.songUrl = res1.data[0]
         }),
-        isPlay && getCommentCount(id).then(res2 => {
+        getCommentCount(id).then(res2 => {
           songMes.commentCount = res2.total
         }),
         getLyric(id).then(res3 => {

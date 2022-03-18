@@ -6,6 +6,7 @@ import { formatDate, getImgSize } from 'utils/format-utils'
 import { parseLyric } from 'utils/parse-lyric'
 import defaultPic from 'assets/img/default_album.png'
 import { getCurrentSong } from '../store/actionCreater'
+import SongList from '../c-cpns/song-list'
 
 export const AppPlayerBar = memo(() => {
     
@@ -28,26 +29,29 @@ export const AppPlayerBar = memo(() => {
   const [timer, setTimer] = useState(null)              // 保存tip的setTimeout事件
   const [showLyric, setShowLyric] = useState(false)     // 控制歌词显示
   const [lyricState, setLyricState] = useState(null)    // 保存歌词
+  const [showList, setShowList] = useState(false)
+
+  const closeSongList = useCallback(setShowList, [])
 
   /**     ref      */
   const songRef = useRef()    // audio标签ref
   const sliderRef = useRef()  // 滑动条ref
   
   /**     变量      */
-  const songIsNull = JSON.stringify(song) === "{}"                  //当前有没有音乐
-  const songTime = value => formatDate(new Date(value), 'mm:ss')    //当前播放的时间
-  const songUrl = song.songUrl?.url          //音乐的地址
-  const playAndPauseClassName =                                     //播放暂停按钮切换的className
+  const songIsNull = JSON.stringify(song) === "{}"                    //当前有没有音乐
+  const songTime = value => formatDate(new Date(value), 'mm:ss')      //当前播放的时间
+  const songUrl = song.songUrl?.url                                   //音乐的地址
+  const playAndPauseClassName =                                       //播放暂停按钮切换的className
     (playOrStop ? 'playBtn' : 'stopBtn') 
     + " sprite_player centerBtn"; 
   const arPic = song.al?.picUrl && (getImgSize(song.al.picUrl, 34)) || defaultPic   //图片
-  const songName = song?.name      //歌曲名
-  const arName = (                        //作者名
+  const songName = song?.name                                         //歌曲名
+  const arName = (                                                    //作者名
     song.ar?.map((item, index, arr) => (
       <span key={index}>{item.name}{index !== arr.length-1 && '/'}</span>
     ))
   )
-  const songAllTime = useMemo(() => song?.dt, [song])          //歌曲总时长（时间戳）
+  const songAllTime = useMemo(() => song?.dt, [song])                 //歌曲总时长（时间戳）
   const duration = !songIsNull ? songTime(songAllTime) : '00:00'      //歌曲总时长（格式化后）
   const playStateTitle = ['随机', '单曲循环', '循环']                  //播放状态
 
@@ -140,13 +144,20 @@ export const AppPlayerBar = memo(() => {
 
   return (
     <PlayControWrapper className="sprite_player">
+      {showList && 
+        <SongList song={song} 
+          currentBg={song.al?.picUrl} 
+          songList={songList} 
+          closeSongList={closeSongList}
+          songIndex={currentSongIndex}
+          currentTime={currentTime}/>}
       <audio ref={songRef} onTimeUpdate={songTimeUpdate} loop={playState === 1} src={songUrl} />
       { showLyric &&
         <span className='songWrod'>
           <span className='xx' onClick={e => setShowLyric(false)}>X</span>
           {
             lyricState?.map((item, index, arr) => {
-              if(item.time <= currentTime && arr[index+1].time >= currentTime){
+              if(item.time < currentTime && arr[index+1].time > currentTime){
                 return (
                   <span key={index} className="lyricMain">
                     { (item.content !== '') && <span>{item.content}</span> }
@@ -215,7 +226,7 @@ export const AppPlayerBar = memo(() => {
                 onClick={e => changePlayState()}
                 title={playStateTitle[playState]}
                 className={`sprite_player playState${playState}`}/>
-              <div className="sprite_player playlist" title="播放列表">
+              <div className="sprite_player playlist" title="播放列表" onClick={e => setShowList(!showList)}>
                 <span className="sprite_player">{songList.length}</span>
               </div>
             </div>
@@ -224,7 +235,7 @@ export const AppPlayerBar = memo(() => {
         {/* tip */}
         <div className='tip sprite_player' style={{display: showTip ? 'block' : 'none'}}>
           {playStateTitle[playState]}
-          </div>
+        </div>
       </div>
     </PlayControWrapper>
   )

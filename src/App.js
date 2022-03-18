@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, Suspense } from 'react';
 import XMAppHeader from 'components/app-header';
 import XMAppFooter from 'components/app-footer';
 import AppWrapper from './router';
@@ -18,7 +18,9 @@ export default memo(function App() {
   return (
     <HashRouter>
       <XMAppHeader/>
-      <AppWrapper/>
+      <Suspense fallback={<div>page loading</div>}>
+        <AppWrapper/>
+      </Suspense>
       <XMAppFooter/>
       <AppPlayerBar/>
     </HashRouter>
