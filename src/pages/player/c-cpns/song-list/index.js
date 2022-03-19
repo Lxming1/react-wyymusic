@@ -1,12 +1,11 @@
-import React, { memo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { formatDate, getImgSize } from 'utils/format-utils'
+import React, { memo, useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { formatDate } from 'utils/format-utils'
 import { parseLyric } from '../../../../utils/parse-lyric'
-import { getCurrentSong } from '../../store/actionCreater'
+import { changeSongList, getCurrentSong } from '../../store/actionCreater'
 import { SongListWrapper, MianWrapper } from './style'
 
 const SongList = memo(({song, songList, currentBg, closeSongList, songIndex, currentTime}) => {
-  console.log(song)
   const dispatch = useDispatch()
   const arName = (ar) => {
     let name = '';
@@ -18,18 +17,67 @@ const SongList = memo(({song, songList, currentBg, closeSongList, songIndex, cur
   const songTime = value => formatDate(new Date(value), 'mm:ss')
   const activeSong = index => songIndex === index ? {color: '#fff'} : {}
 
-  const playSong = (id) => {
-    // console.log(id)
+  const playSong = (id, e) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
     dispatch(getCurrentSong(id, true))
   }
-  const lyric = parseLyric(song?.lyric)
+
+  const scrollRef = useRef()
+  const pRef = useRef()
+
+  const getActiveRef = (item, index, arr) => {
+    if(item?.time <= currentTime && arr[index+1]?.time >= currentTime) {
+      return pRef
+    }
+    return null
+  }
+
+  const delSong = (i, e) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    
+    const newSonglist = songList.filter((item, index) => index !== i)
+    dispatch(changeSongList(newSonglist))
+    if (i === songIndex) {
+      const ind = songIndex === songList.length-1 ? 0 : i
+      dispatch(getCurrentSong(newSonglist[ind].id, true))
+    }
+  }
+
+  const lyric = parseLyric(song?.lyric).filter(item => !Object.is(item.time, NaN))
 
   const activeLyricStyle = (item, index, arr) => {
     const style = 
-      (item.time < currentTime && arr[index+1].time > currentTime) ?
+      (item?.time <= currentTime && arr[index+1]?.time >= currentTime) ?
       {color: '#fff', fontSize: '14px'} : {}
-    return style
+    const noContentAddHeight = item.content === '' ? {height: '32px'} : {}
+    return {...style, ...noContentAddHeight}
   }
+
+  const [autoLoad, setAutoLoad] = useState(true)
+  const [timeoutEve, setTimeoutEve] = useState(null)
+
+  const scrollWords = (e) => {
+    setAutoLoad(false)
+    clearTimeout(timeoutEve)
+    setTimeoutEve(setTimeout(() => {
+      setAutoLoad(true)
+    }, 2000))
+  }
+
+  const clearAll = () => {
+    dispatch(changeSongList([]))
+  }
+
+  useEffect(() => {
+    if (autoLoad) {
+      scrollRef.current.scrollTop = pRef.current?.offsetTop - 115
+    }
+    // return () => {
+    //   clearTimeout(timeoutEve)
+    // }
+  }, [currentTime])
   return (
     <SongListWrapper>
       <header>
@@ -37,15 +85,15 @@ const SongList = memo(({song, songList, currentBg, closeSongList, songIndex, cur
           <div className='left'>
             <span className='showCount'>播放列表({songList.length})</span>
             <div className='mainCenter'>
-              <a href="" className='leftIc'>
+              <span className='leftIc'>
                 <i className='sprite_songlist col'></i>
                 <span className='first'>收藏全部</span>
-              </a>
+              </span>
               <span className='line'></span>
-              <a href="" className='rightIc'>
+              <span  className='rightIc'>
                 <i className='sprite_songlist del'></i>
-                <span className='second'>清除</span> 
-              </a>
+                <span className='second' onClick={e => clearAll()}>清除</span> 
+              </span>
             </div>
           </div>
           <div className='right'>
@@ -62,7 +110,7 @@ const SongList = memo(({song, songList, currentBg, closeSongList, songIndex, cur
           <ul>
             {
               songList.map((item, index) => (
-                <li key={item.id} className="songItem" onClick={e => playSong(item.id)}>
+                <li key={item.id} className="songItem" onClick={e => playSong(item.id, e)}>
                   <div className='listLeft'>
                     {songIndex === index && <i className='playIcon sprite_songlist'></i>}
                     <span className='songName' style={activeSong(index)}>{item.name}</span>
@@ -71,7 +119,7 @@ const SongList = memo(({song, songList, currentBg, closeSongList, songIndex, cur
                     <i className='sprite_songlist collectIcon'></i>
                     <i className='sprite_songlist shareIcon'></i>
                     <i className='sprite_songlist downloadIcon'></i>
-                    <i className='sprite_songlist delIcon'></i>
+                    <i className='sprite_songlist delIcon' onClick={e => delSong(index, e)}></i>
                   </div>
                   <div className='listRight'>
                     <span className='author' style={activeSong(index)}>{arName(item.ar)}</span>
@@ -84,11 +132,16 @@ const SongList = memo(({song, songList, currentBg, closeSongList, songIndex, cur
           </ul>
         </div>
         <div className='mskRight'></div>
-        <div className="mainRight">
+        <div className="mainRight" ref={scrollRef} onScrollCapture={e => scrollWords(e)}>
           {
-            lyric.map((item, index, arr) => (
-              <p key={index} style={activeLyricStyle(item, index, arr)}>{item.content}</p>
-            ))
+            lyric.map((item, index, arr) => {
+                return (
+                  <p key={index} ref={getActiveRef(item, index, arr)}
+                    style={activeLyricStyle(item, index, arr)}>
+                    {item.content}
+                  </p>
+                )
+            })
           }
         </div>
       </MianWrapper>

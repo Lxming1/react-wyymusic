@@ -17,7 +17,6 @@ const SongLeft = memo(() => {
     shareCount: '分享',
     commentCount: songPageMes.commentCount
   }), [songPageMes])
-  console.log(songPageMes)
 
   const songPic = songPageMes.al && getImgSize(songPageMes.al.picUrl, 130)
   const songAlbum = songPageMes.al && songPageMes.al.name

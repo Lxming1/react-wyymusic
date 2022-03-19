@@ -144,13 +144,14 @@ export const AppPlayerBar = memo(() => {
 
   return (
     <PlayControWrapper className="sprite_player">
-      {showList && 
+      { showList && 
         <SongList song={song} 
           currentBg={song.al?.picUrl} 
           songList={songList} 
           closeSongList={closeSongList}
           songIndex={currentSongIndex}
-          currentTime={currentTime}/>}
+          currentTime={currentTime}/>
+      }
       <audio ref={songRef} onTimeUpdate={songTimeUpdate} loop={playState === 1} src={songUrl} />
       { showLyric &&
         <span className='songWrod'>

@@ -22,10 +22,26 @@ export const changCurrentSongIndex = index => ({
   index
 })
 
+export const addToSonglist = song => {
+  return (dispatch, getState) => {
+    const songList = [...getState().getIn(['songInfo', 'songList'])]
+    if (Object.prototype.toString.call(song) === '[object Object]'){
+      const index = songList.findIndex(item => item.id === song.id)
+      if (index === -1){
+        songList.push(song)
+        dispatch(changeSongList(songList))
+      }
+    } else {
+      const newSonglist = [...new Set([...songList, ...song])]
+      dispatch(changeSongList(newSonglist))
+    }
+  }
+}
+
 export const getCurrentSong = (id, isPlay) => {
   return (dispatch, getState) => {
     getSongApi(id).then(res => {
-      const songMes = {...res.songs[0]}
+      const songMes = {...res?.songs[0]}
       Promise.all([
         getSongUrl(id).then(res1 => {
           songMes.songUrl = res1.data[0]

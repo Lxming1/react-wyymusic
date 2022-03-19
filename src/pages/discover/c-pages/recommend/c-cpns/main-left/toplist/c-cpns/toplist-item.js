@@ -3,6 +3,7 @@ import { getImgSize } from 'utils/format-utils'
 import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { useDispatch } from 'react-redux'
 import { addAndPlayOne } from 'utils/play-lot-song'
+import { addToSonglist } from 'pages/player/store/actionCreater'
 
 const ToplistItem = memo(({item, index}) => {
   const leftArr = [20, 20.4, 20.9]
@@ -18,6 +19,10 @@ const ToplistItem = memo(({item, index}) => {
   }
   const allToList = () => {
     addAndPlayOne(item.tracks, dispatch)
+  }
+
+  const addToList = song => {
+    dispatch(addToSonglist(song))
   }
 
   return (
@@ -44,7 +49,7 @@ const ToplistItem = memo(({item, index}) => {
                 <a href={`#/song?id=${item.id}`} className="name">{item.name}</a>
                 <div className="oper">
                   <a title="播放" className="play sprite_02" onClick={e => playSong(item.id)}> </a>
-                  <a href="#/" title="添加到播放列表" className="addToList sprite_icon2"> </a>
+                  <a title="添加到播放列表" className="addToList sprite_icon2" onClick={e => addToList(item)}> </a>
                   <a href="#/" title="收藏" className="collect sprite_02"> </a>
                 </div>
               </li>

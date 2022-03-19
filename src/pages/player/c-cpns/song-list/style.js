@@ -5,11 +5,9 @@ export const SongListWrapper = styled.div`
   position: absolute;
   width: 986px;
   height: 301px;
-  /* background-color: #666; */
   left: 50%;
   top: -295px;
   transform: translate(-50%);
-  /* padding: 0 5px; */
 
   header{
     height: 41px;
@@ -46,9 +44,11 @@ export const SongListWrapper = styled.div`
             display: flex;
             align-items: center;
             color: #ccc;
+            cursor: pointer;
 
             :hover{
               color: #e2e2e2;
+              text-decoration: underline;
               .col{
                 background-position: -24px -20px;
               }
@@ -75,9 +75,11 @@ export const SongListWrapper = styled.div`
             align-items: center;
             color: #ccc;
             margin-right: 18px;
+            cursor: pointer;
 
             :hover{
               color: #e2e2e2;
+              text-decoration: underline;
               .del{
                 background-position: -51px -20px;
               }
@@ -133,7 +135,7 @@ export const MianWrapper = styled.div`
     position: absolute;
     left: 8px;
     top: -140%;
-    filter: blur(5px);
+    filter: blur(10px);
     z-index: 1;
     overflow: hidden;
   }
@@ -146,30 +148,41 @@ export const MianWrapper = styled.div`
     width: 558px;
     height: 260px;
     background: #121212;
-    opacity: .95;
+    opacity: .98;
   }
 
   .mainLeft{
-    width: 553px;
+    width: 558px;
     z-index: 4;
     position: absolute;
     height: 260px;
-    /* overflow-y: scroll; */
     overflow-y: scroll;
 
     ::-webkit-scrollbar {
-      display: none;
+      width: 6px;
+      height: 260px;
+      background: #000;
     }
+    ::-webkit-scrollbar-thumb{
+      width: 4px;
+      border-radius: 5px;
+      height: 100px;
+      background: #474849;
+      border: 1px solid #5a5c5f;
+    }
+    
 
     ul{
       z-index: 5;
-      cursor: pointer;
+      height: 288px;
+
       .songItem{
         height: 28px;
         display: flex;
         align-items: center;
         color: #ccc;
         justify-content: space-between;
+        cursor: pointer;
 
         :hover{
           background-color: rgba(0,0,0,0.4);
@@ -206,6 +219,10 @@ export const MianWrapper = styled.div`
 
           .songName{
             padding-left: 30px;
+            width: 286px;
+            overflow: hidden; // 文本溢出隐藏
+            text-overflow: ellipsis; // 显示省略号
+            white-space: nowrap; // 设置文本不换行
           }
         }
 
@@ -296,29 +313,39 @@ export const MianWrapper = styled.div`
     width: 424px;
     height: 260px;
     background: #121212;
-    opacity: .95;
+    opacity: .9;
   }
+
   .mainRight{
     width: 424px;
     height: 260px;
     position: absolute;
-    right: 0;
     padding: 20px 0;
+    right: 0;
+    z-index: 3;
     overflow-y: scroll;
 
     ::-webkit-scrollbar {
-      display: none;
+      width: 6px;
+      height: 260px;
+      background: #000;
+      cursor: pointer;
+    }
+    ::-webkit-scrollbar-thumb{
+      width: 4px;
+      border-radius: 5px;
+      height: 45x;
+      background: #474849;
+      border: 1px solid #5a5c5f;
     }
 
     p{
       position: relative  ;
-      width: 424px;
       color: #989898;
       left: 0;
-      color: #989898;
       z-index: 3;
       text-align: center;
-      height: 32px;
+      line-height: 32px;
       font-size: 12px;
       transition: color 0.7s linear;
     }

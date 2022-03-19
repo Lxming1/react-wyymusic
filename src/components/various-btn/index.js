@@ -4,6 +4,7 @@ import { wan } from 'utils/format-utils'
 import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { BtnWrapper } from './style'
 import { addAndPlayOne } from '../../utils/play-lot-song'
+import { addToSonglist } from '../../pages/player/store/actionCreater'
 
 const VariousBtn = memo(({song, subscribedCount, shareCount, commentCount}) => {
 
@@ -15,6 +16,10 @@ const VariousBtn = memo(({song, subscribedCount, shareCount, commentCount}) => {
     } else if (typeof song === 'number') {
       dispatch(getCurrentSong(song, true))
     }
+  }
+
+  const addToList = () => {
+    dispatch(addToSonglist(song))
   }
 
   const btnCpn = (classname, content) => (
@@ -35,7 +40,7 @@ const VariousBtn = memo(({song, subscribedCount, shareCount, commentCount}) => {
           <span className='playT'>播放</span>
         </i>
       </span>
-      <a href="#/" className="addToPlayList sprite_button" title="添加到播放列表"> </a>
+      <a className="addToPlayList sprite_button" title="添加到播放列表" onClick={e => addToList()}> </a>
       {btnCpn('collectToPlayList', wan(subscribedCount, 100000))}
       {btnCpn('transfer', wan(shareCount, 100000))}
       {btnCpn('download')}
