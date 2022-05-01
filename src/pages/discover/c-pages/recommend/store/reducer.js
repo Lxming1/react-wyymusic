@@ -1,14 +1,13 @@
-import { Map } from "immutable" //性能优化
-import { 
-  ClEARPLISTDETAIL,
+import { Map } from 'immutable' //性能优化
+import {
   GETALBUM,
-  GETANCHOR, 
-  GETARTIST, 
-  GETBANNERMES, 
-  GETPLAYLISTDETAIL, 
-  GETRECOMMEND, 
-  GETRMDTOPLIST 
-} from "./contant"
+  GETANCHOR,
+  GETARTIST,
+  GETBANNERMES,
+  GETPLAYLISTDETAIL,
+  GETRECOMMEND,
+  GETRMDTOPLIST,
+} from './contant'
 
 const initState = Map({
   bannerMes: [],
@@ -17,11 +16,11 @@ const initState = Map({
   recToplistMes: [],
   artistMes: [],
   anchorMes: [],
-  playlistDetailMes: {}
+  playlistDetailMes: {},
 })
 
 export default function reducer(state = initState, actions) {
-  switch(actions.type) {
+  switch (actions.type) {
     case GETBANNERMES:
       return state.set('bannerMes', actions.banner)
     case GETRECOMMEND:

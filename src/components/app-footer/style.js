@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const FooterWrapper = styled.div`
-  height: 173px;
+  height: 200px;
   background-color: #f2f2f2;
   position: relative;
   left: 0;
