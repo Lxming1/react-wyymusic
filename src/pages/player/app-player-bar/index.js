@@ -16,6 +16,7 @@ import { getCurrentSong } from "../store/actionCreater";
 import SongList from "../c-cpns/song-list";
 
 export const AppPlayerBar = memo(() => {
+
   /**   获取歌曲信息    */
   const { song, songList, currentSongIndex } = useSelector(
     (state) => ({
@@ -61,7 +62,7 @@ export const AppPlayerBar = memo(() => {
       {index !== arr.length - 1 && "/"}
     </span>
   ));
-  const songAllTime = useMemo(() => song?.dt, [song]); //歌曲总时长（时间戳）
+  const songAllTime = useMemo(() => song.dt, [song]); //歌曲总时长（时间戳）
   const duration = !songIsNull ? songTime(songAllTime) : "00:00"; //歌曲总时长（格式化后）
   const playStateTitle = ["随机", "单曲循环", "循环"]; //播放状态
 

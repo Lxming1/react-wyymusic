@@ -6,7 +6,6 @@ import { HashRouter } from 'react-router-dom';
 import { AppPlayerBar } from './pages/player/app-player-bar';
 import { useDispatch } from 'react-redux';
 import { changeCurrentSong } from './pages/player/store/actionCreater';
-
 export default memo(function App() {
   const dispatch = useDispatch()
   useEffect(() => {

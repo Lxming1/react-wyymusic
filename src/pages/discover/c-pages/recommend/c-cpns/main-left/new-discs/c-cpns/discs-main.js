@@ -12,7 +12,7 @@ const DiscsMain = memo(() => {
 
   const carouselRef = useRef()
   const arr = []
-  for(let i = 0; i< albumMes.length / 5; i++) {
+  for(let i = 0; i< albumMes?.length / 5; i++) {
     arr.push([])
   }
   for(let i in albumMes) {

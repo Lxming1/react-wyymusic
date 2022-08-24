@@ -16,6 +16,8 @@ import {
   getAnchorApi,
   getPlaylistDetailApi,
 } from 'services/recommend'
+import { getSongApi } from '../../../../../services/player'
+import { getAlbumDetailApi } from '../../../../../services/recommend'
 
 // 轮播图
 export const changeBanner = (banner) => ({
@@ -69,19 +71,22 @@ export const getRecommedToplist = () => {
   return (dispatch) => {
     const promiseList = []
     const ids = [19723756, 3779629, 2884035]
-    const mes = []
     for (let id of ids) {
-      promiseList.push(
-        getToplistItemApi(id).then((res1) => {
-          const songObj = res1.playlist
-          const tracks = songObj.tracks?.filter((item, index) => index < 10)
-          songObj.tracks = tracks
-          mes.push(songObj)
-        })
-      )
+      promiseList.push(getToplistItemApi(id))
     }
-    Promise.all(promiseList).then((res) => {
-      dispatch(changeRecommendToplist(mes))
+    Promise.all(promiseList).then(res => {
+      const arr = []
+      res.forEach(item => {
+        const songObj = item.playlist
+        const tracks = songObj && songObj.tracks && songObj.tracks.slice(0, 10)
+        songObj.tracks = tracks
+        arr.push(songObj)
+      })
+      return arr
+    }).then((res) => {
+      dispatch(changeRecommendToplist(res))
+    }).catch(err => {
+      console.log(err)
     })
   }
 }

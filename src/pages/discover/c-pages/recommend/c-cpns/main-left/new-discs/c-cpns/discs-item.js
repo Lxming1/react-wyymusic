@@ -1,9 +1,14 @@
 import React, { memo } from 'react'
+import { useDispatch } from 'react-redux'
 import { getImgSize } from 'utils/format-utils'
+import { getAlbumDetailApi } from 'services/recommend'
+import { addAndPlayOne } from 'utils/play-lot-song'
 
 const DiscsItem = memo(({item}) => {
-  const playSong = () => {
-    console.log(item)
+  const dispatch = useDispatch()
+  const playSong = async () => {
+    const songList = (await getAlbumDetailApi(item.id)).songs
+    addAndPlayOne(songList, dispatch)
   }
   return (
     <div className='discsItem sprite_02' title={item.artist.name}>

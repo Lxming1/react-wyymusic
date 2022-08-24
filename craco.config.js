@@ -21,6 +21,6 @@ module.exports = {
       "services": resolve("src/services"),
       "store": resolve("src/store"),
       "utils": resolve("src/utils")
-    }
+    },
   }
 }

@@ -78,27 +78,27 @@ const SongList = memo(
     };
 
     const showLyric = () => {
-      const noLyricStyle = {
-        color: "#989898",
-        fontSize: "12px",
-        textAlign: "center",
-        marginTop: "20px",
-      };
+    const noLyricStyle = {
+      color: "#989898",
+      fontSize: "12px",
+      textAlign: "center",
+      marginTop: "20px",
+    };
 
-      const mes =
-        Object.keys(song).length !== 0
-          ? lyric.length !== 0
-            ? lyric.map((item, index, arr) => (
-                <p
-                  key={index}
-                  ref={getActiveRef(item, index, arr)}
-                  style={activeLyricStyle(item, index, arr)}
-                >
-                  {item.content}
-                </p>
-              ))
-            : "当前歌曲没有歌词"
-          : "当前没有播放音乐";
+    const mes =
+      Object.keys(song).length !== 0
+        ? lyric.length !== 0
+          ? lyric.map((item, index, arr) => (
+              <p
+                key={index}
+                ref={getActiveRef(item, index, arr)}
+                style={activeLyricStyle(item, index, arr)}
+              >
+                {item.content}
+              </p>
+            ))
+          : "当前歌曲没有歌词"
+        : "当前没有播放音乐";
 
       return <div style={noLyricStyle}>{mes}</div>;
     };

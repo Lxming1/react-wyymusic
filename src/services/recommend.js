@@ -10,7 +10,11 @@ export const getRecommendApi = () => {
 }
 // 新碟上架
 export const getAlbumApi = () => {
-  return request('/top/album?limit=10')
+  return request('/album/newest')
+}
+// 根据专辑id获取专辑
+export const getAlbumDetailApi = id => {
+  return request(`/album?id=${id}`)
 }
 // 榜单
 export const getToplistApi = () => {
@@ -18,7 +22,7 @@ export const getToplistApi = () => {
 }
 // 榜单详情
 export const getToplistItemApi = id => {
-  return request(`/top/list?id=${id}`)
+  return request(`/playlist/detail?id=${id}`)
 }
 // 入驻歌手
 export const getArtistApi = () => {
