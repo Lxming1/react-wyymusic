@@ -6,8 +6,9 @@ import {
 import reducer from './reducer.js'
 import thunkMiddleware  from 'redux-thunk';
 
-const storeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({trace: true}) || compose
+// const storeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({trace: true}) || compose
 const storeMiddleware = applyMiddleware(thunkMiddleware)
-const store = createStore(reducer, storeEnhancer(storeMiddleware))
+// const store = createStore(reducer, storeEnhancer(storeMiddleware))
+const store = createStore(reducer, storeMiddleware)
 
 export default store

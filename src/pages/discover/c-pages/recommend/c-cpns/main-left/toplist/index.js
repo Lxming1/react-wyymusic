@@ -15,7 +15,7 @@ const Toplist = memo(() => {
 
   useEffect(() => {
     dispatch(getRecommedToplist())
-  }, [dispatch])
+  }, [])
 
   return (
     <ToplistWrapper>

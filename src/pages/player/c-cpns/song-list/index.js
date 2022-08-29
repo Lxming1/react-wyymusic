@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { formatDate } from "utils/format-utils";
 import { parseLyric } from "../../../../utils/parse-lyric";
@@ -28,18 +28,19 @@ const SongList = memo(
     const scrollRef = useRef();
     const pRef = useRef();
 
-    const getActiveRef = (item, index, arr) => {
+    // 给当前播放的歌词添加ref
+    const getActiveRef = useCallback((item, index, arr) => {
       if (item?.time <= currentTime && arr[index + 1]?.time >= currentTime) {
         return pRef;
       }
       return null;
-    };
+    }, [currentTime]);
 
     const delSong = (i, e) => {
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
 
-      const newSonglist = songList.filter((item, index) => index !== i);
+      const newSonglist = songList.filter((_, index) => index !== i);
       dispatch(changeSongList(newSonglist));
       if (i === songIndex) {
         const ind = songIndex === songList.length - 1 ? 0 : i;
@@ -52,10 +53,10 @@ const SongList = memo(
     );
 
     const activeLyricStyle = (item, index, arr) => {
+      // 当前时间在两条歌词之间，就添加active的样式
       const style =
         item?.time <= currentTime && arr[index + 1]?.time >= currentTime
-          ? { color: "#fff", fontSize: "14px" }
-          : {};
+          ? { color: "#fff", fontSize: "14px" } : {};
       const noContentAddHeight = item.content === "" ? { height: "32px" } : {};
       return { ...style, ...noContentAddHeight };
     };
@@ -63,6 +64,7 @@ const SongList = memo(
     const [autoLoad, setAutoLoad] = useState(true);
     const [timeoutEve, setTimeoutEve] = useState(null);
 
+    // 手动滚动歌词，2秒后歌词回到当前状态
     const scrollWords = (e) => {
       setAutoLoad(false);
       clearTimeout(timeoutEve);
@@ -78,33 +80,27 @@ const SongList = memo(
     };
 
     const showLyric = () => {
-    const noLyricStyle = {
-      color: "#989898",
-      fontSize: "12px",
-      textAlign: "center",
-      marginTop: "20px",
-    };
+      const mes =
+        Object.keys(song).length !== 0
+          ? lyric.length !== 0
+            ? lyric.map((item, index, arr) => (
+                <p
+                  key={index}
+                  ref={getActiveRef(item, index, arr)}
+                  style={activeLyricStyle(item, index, arr)}
+                >
+                  {item.content}
+                </p>
+              ))
+            : "当前歌曲没有歌词"
+          : "当前没有播放音乐";
 
-    const mes =
-      Object.keys(song).length !== 0
-        ? lyric.length !== 0
-          ? lyric.map((item, index, arr) => (
-              <p
-                key={index}
-                ref={getActiveRef(item, index, arr)}
-                style={activeLyricStyle(item, index, arr)}
-              >
-                {item.content}
-              </p>
-            ))
-          : "当前歌曲没有歌词"
-        : "当前没有播放音乐";
-
-      return <div style={noLyricStyle}>{mes}</div>;
+      return <div className="noLyricStyle">{mes}</div>;
     };
 
     useEffect(() => {
       if (autoLoad) {
+        // 拿到当前播放的歌词的高度来设置歌词列表的高度
         scrollRef.current.scrollTop = pRef.current?.offsetTop - 115;
       }
     }, [currentTime]);

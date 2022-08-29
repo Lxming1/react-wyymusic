@@ -45,8 +45,6 @@ export const BannerWrapper = styled.div`
     height: 284px;
     width: 100%;
     background: url(${props => props.imageUrl}) center center/6000px;
-    /* filter: blur(50px);
-    transform: scale(1.5); */
   }
 
   .bannerMain{

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { getSongApi, getSongUrl, getCommentCount, getLyric } from "services/player";
 import { ADDSONGPAGEMES, CHANGESONGLIST, CHANGECURRENTSONG, CHANGECURRENTSONGINDEX } from "./contant";
 
@@ -43,16 +44,18 @@ export const getCurrentSong = (id, isPlay) => {
     getSongApi(id).then(res => {
       const songMes = {...res?.songs[0]}
       Promise.all([
-        getSongUrl(id).then(res1 => {
-          songMes.songUrl = res1.data[0]
-        }),
-        getCommentCount(id).then(res2 => {
-          songMes.commentCount = res2.total
-        }),
-        getLyric(id).then(res3 => {
-          songMes.lyric = res3.lrc.lyric
-        })
-      ]).then(() => {
+        // axios.get(`http://1.12.47.237:3000/song/url?id=${id}`, {
+        //   xhrFields: { withCredentials: true }
+        // }),
+        getSongUrl(id),
+        getCommentCount(id),
+        getLyric(id)
+      ]).then(resArr => {
+        songMes.songUrl = resArr[0].data[0]
+        songMes.commentCount = resArr[1].total
+        songMes.lyric = resArr[2].lrc.lyric
+        console.log(resArr[0])
+
         if(!songMes.songUrl?.url) return
         if(isPlay) {
           const songList = [...getState().getIn(['songInfo', 'songList'])]
@@ -76,6 +79,8 @@ export const getCurrentSong = (id, isPlay) => {
         } else {
           dispatch(addSongPageMes(songMes))
         }
+      }).catch(err => {
+        new Error("获取歌曲失败")
       })
     })
   }

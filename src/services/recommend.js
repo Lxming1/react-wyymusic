@@ -20,10 +20,7 @@ export const getAlbumDetailApi = id => {
 export const getToplistApi = () => {
   return request('/toplist')
 }
-// 榜单详情
-export const getToplistItemApi = id => {
-  return request(`/playlist/detail?id=${id}`)
-}
+
 // 入驻歌手
 export const getArtistApi = () => {
   return request('/toplist/artist?limit=5')

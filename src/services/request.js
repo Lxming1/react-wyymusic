@@ -1,9 +1,11 @@
 import axios from "axios";
 
 const instance = axios.create({
-  // baseURL: 'http://123.207.32.32:9001/',
-  baseURL: 'http://localhost:3000',
-  timeout: 5000
+  baseURL: 'http://1.12.47.237:3000/',
+  // baseURL: "http://cloud-music.pl-fe.cn/",
+  // baseURL: "http://localhost:3000",
+  timeout: 5000,
+  // xhrFields: { withCredentials: true }
 })
 
 instance.interceptors.request.use(config => {

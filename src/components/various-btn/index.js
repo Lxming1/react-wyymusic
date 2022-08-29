@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { wan } from 'utils/format-utils'
 import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { BtnWrapper } from './style'
-import { addAndPlayOne } from '../../utils/play-lot-song'
+import { addAndPlayOne } from '../../utils/play-list-song'
 import { addToSonglist } from '../../pages/player/store/actionCreater'
 
 const VariousBtn = memo(({song, subscribedCount, shareCount, commentCount}) => {

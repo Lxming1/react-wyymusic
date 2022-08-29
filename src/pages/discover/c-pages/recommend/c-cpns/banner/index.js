@@ -51,7 +51,7 @@ const Banner = memo(() => {
   const downLoadMes = 'PC 安卓 iPhone WP iPad Mac 六大客户端'
 
   // 点击轮播图播放图片
-  const imgjump = id => {
+  const imgJump = id => {
     id.length === 10 && dispatch(getCurrentSong(id, true))
   }
 
@@ -73,7 +73,7 @@ const Banner = memo(() => {
   const bannerItem = (
     banner.map(item => {
       return (
-        <div key={item.typeTitle} className="bannerItem" onClick={e => imgjump(item.encodeId)}>
+        <div key={item.typeTitle} className="bannerItem" onClick={e => imgJump(item.encodeId)}>
           <img src={item.imageUrl} alt={item.typeTitle}/>
         </div>
       )
@@ -90,7 +90,6 @@ const Banner = memo(() => {
             autoplay
             effect="fade" 
             ref={carouselRef}
-            pauseOnDotsHover='false'
             appendDots={dots => myDots(dots)}
             beforeChange={(oldI, newI) => beforeChange(newI)}>
             { bannerItem }

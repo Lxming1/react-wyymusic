@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import { getImgSize } from 'utils/format-utils'
 import { getCurrentSong } from 'pages/player/store/actionCreater'
 import { useDispatch } from 'react-redux'
-import { addAndPlayOne } from 'utils/play-lot-song'
+import { addAndPlayOne } from 'utils/play-list-song'
 import { addToSonglist } from 'pages/player/store/actionCreater'
 
 const ToplistItem = memo(({item, index}) => {

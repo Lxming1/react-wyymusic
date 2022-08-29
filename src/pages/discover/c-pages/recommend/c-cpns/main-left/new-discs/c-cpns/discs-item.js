@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { getImgSize } from 'utils/format-utils'
 import { getAlbumDetailApi } from 'services/recommend'
-import { addAndPlayOne } from 'utils/play-lot-song'
+import { addAndPlayOne } from 'utils/play-list-song'
 
 const DiscsItem = memo(({item}) => {
   const dispatch = useDispatch()

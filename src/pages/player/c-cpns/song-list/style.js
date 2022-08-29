@@ -325,6 +325,13 @@ export const MianWrapper = styled.div`
     z-index: 3;
     overflow-y: scroll;
 
+    .noLyricStyle {
+      color: #989898;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
     ::-webkit-scrollbar {
       width: 6px;
       height: 260px;
@@ -340,7 +347,7 @@ export const MianWrapper = styled.div`
     }
 
     p{
-      position: relative  ;
+      position: relative;
       color: #989898;
       left: 0;
       z-index: 3;

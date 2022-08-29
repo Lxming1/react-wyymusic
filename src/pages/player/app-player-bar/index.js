@@ -39,8 +39,8 @@ export const AppPlayerBar = memo(() => {
   const [timer, setTimer] = useState(null); // 保存tip的setTimeout事件
   const [showLyric, setShowLyric] = useState(false); // 控制歌词显示
   const [lyricState, setLyricState] = useState(null); // 保存歌词
-  const [showList, setShowList] = useState(false);
-
+  const [showList, setShowList] = useState(false);  // 传给歌播放列表
+  // 播放列表控制关闭
   const closeSongList = useCallback(setShowList, []);
 
   /**     ref      */
@@ -134,7 +134,7 @@ export const AppPlayerBar = memo(() => {
         songRef.current.play();
         setPlayOrStop(false);
       } else {
-        playState === 2 && playNext();
+        (playState === 2) && playNext();
         if (playState === 0) {
           // 随机播放
           const randomNum = Math.floor(Math.random() * songList.length);

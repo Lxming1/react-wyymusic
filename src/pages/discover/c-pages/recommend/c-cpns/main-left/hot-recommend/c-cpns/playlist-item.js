@@ -4,7 +4,7 @@ import { getImgSize } from 'utils/format-utils'
 import { wan } from 'utils/format-utils'
 import { getPlaylistDetailApi } from 'services/recommend'
 import { useDispatch } from 'react-redux'
-import { addAndPlayOne } from 'utils/play-lot-song'
+import { addAndPlayOne } from 'utils/play-list-song'
 
 const PlaylistItem = memo(({playlistItem}) => {
   const dispatch = useDispatch()
